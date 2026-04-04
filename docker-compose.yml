@@ -1,0 +1,37 @@
+services:
+  app:
+    build:
+      context: .
+      args:
+        VITE_APP_NAME: "Spaced Repetition"
+    command: php artisan serve --host=0.0.0.0 --port=8000
+    environment:
+      - PHP_CLI_SERVER_WORKERS=4
+      - DB_DATABASE=/app/database/sqlite/database.sqlite
+    ports:
+      - "8200:8000"
+    volumes:
+      - ./.env:/app/.env:ro
+      - db-data:/app/database/sqlite
+      - storage-data:/app/storage
+    restart: unless-stopped
+
+  queue:
+    build:
+      context: .
+      args:
+        VITE_APP_NAME: "Spaced Repetition"
+    command: php artisan queue:work --tries=1 --sleep=3
+    environment:
+      - DB_DATABASE=/app/database/sqlite/database.sqlite
+    volumes:
+      - ./.env:/app/.env:ro
+      - db-data:/app/database/sqlite
+      - storage-data:/app/storage
+    depends_on:
+      - app
+    restart: unless-stopped
+
+volumes:
+  db-data:
+  storage-data:
