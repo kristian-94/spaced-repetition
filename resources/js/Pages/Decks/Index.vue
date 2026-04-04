@@ -22,6 +22,7 @@ const editDeckForm = useForm({
     description: '',
     is_active: false,
     color: '',
+    new_cards_per_day: 20,
 });
 
 function openNewDeckModal() {
@@ -35,6 +36,7 @@ function openEditDeckModal(deck) {
     editDeckForm.description = deck.description ?? '';
     editDeckForm.is_active = deck.is_active;
     editDeckForm.color = deck.color ?? '';
+    editDeckForm.new_cards_per_day = deck.new_cards_per_day ?? 20;
     showEditDeckModal.value = true;
 }
 
@@ -313,6 +315,16 @@ const deckColors = [
                                     class="w-4 h-4 rounded border-gray-300 text-blue-600"
                                 />
                                 <label for="editIsActive" class="text-sm text-gray-700 dark:text-gray-300">Active (show in review)</label>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">New cards per day</label>
+                                <input
+                                    v-model.number="editDeckForm.new_cards_per_day"
+                                    type="number"
+                                    min="1"
+                                    max="9999"
+                                    class="w-24 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+                                />
                             </div>
                             <div class="flex gap-3 pt-2">
                                 <button

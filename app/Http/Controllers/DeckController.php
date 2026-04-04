@@ -53,6 +53,7 @@ class DeckController extends Controller
             'description' => 'nullable|string',
             'is_active' => 'boolean',
             'color' => 'nullable|string|max:20',
+            'new_cards_per_day' => 'integer|min:1|max:9999',
         ]);
 
         $deck->update($validated);

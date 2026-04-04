@@ -15,10 +15,12 @@ class Deck extends Model
         'description',
         'is_active',
         'color',
+        'new_cards_per_day',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'new_cards_per_day' => 'integer',
     ];
 
     public function user()
