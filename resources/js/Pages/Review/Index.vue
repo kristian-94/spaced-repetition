@@ -8,6 +8,7 @@ const props = defineProps({
     card: Object,
     dueCount: Number,
     nextDue: String,
+    allMode: { type: Boolean, default: false },
 });
 
 const showAnswer = ref(false);
@@ -16,6 +17,7 @@ const isSubmitting = ref(false);
 
 const reviewForm = useForm({
     card_id: props.card?.id,
+    deck_id: props.deck?.id,
     rating: null,
     duration_ms: null,
 });
@@ -31,8 +33,13 @@ function submitRating(rating) {
     reviewForm.rating = rating;
     reviewForm.duration_ms = Date.now() - startTime.value;
     reviewForm.card_id = props.card.id;
+    reviewForm.deck_id = props.deck.id;
 
-    reviewForm.post(route('review.submit', props.deck.id), {
+    const url = props.allMode
+        ? route('review.submitAll')
+        : route('review.submit', props.deck.id);
+
+    reviewForm.post(url, {
         onFinish: () => {
             isSubmitting.value = false;
             showAnswer.value = false;
@@ -90,9 +97,11 @@ const ratingButtons = [
                     </svg>
                 </Link>
                 <div>
-                    <h1 class="text-xl font-bold text-gray-900 dark:text-white">{{ deck.name }}</h1>
+                    <h1 class="text-xl font-bold text-gray-900 dark:text-white">
+                        {{ allMode ? 'All Decks' : deck.name }}
+                    </h1>
                     <p class="text-sm text-gray-500 dark:text-gray-400">
-                        {{ dueCount }} card{{ dueCount !== 1 ? 's' : '' }} remaining
+                        <template v-if="allMode && deck">{{ deck.name }} · </template>{{ dueCount }} card{{ dueCount !== 1 ? 's' : '' }} remaining
                     </p>
                 </div>
             </div>

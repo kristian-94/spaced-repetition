@@ -26,7 +26,8 @@ class DeckController extends Controller
             });
 
         return Inertia::render('Decks/Index', [
-            'decks' => $decks,
+            'decks'    => $decks,
+            'totalDue' => $decks->sum('due_count'),
         ]);
     }
 

@@ -46,6 +46,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Review
     Route::get('/decks/{deck}/review', [ReviewController::class, 'index'])->name('review.index');
     Route::post('/decks/{deck}/review', [ReviewController::class, 'submit'])->name('review.submit');
+    Route::get('/review/all', [ReviewController::class, 'all'])->name('review.all');
+    Route::post('/review/all', [ReviewController::class, 'submitAll'])->name('review.submitAll');
 
     // Settings
     Route::get('/settings', [SettingsController::class, 'show'])->name('settings.show');

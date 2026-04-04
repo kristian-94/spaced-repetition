@@ -5,6 +5,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 
 const props = defineProps({
     decks: Array,
+    totalDue: Number,
 });
 
 const showNewDeckModal = ref(false);
@@ -88,15 +89,25 @@ const deckColors = [
                     <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Decks</h1>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{{ decks.length }} decks</p>
                 </div>
-                <button
-                    @click="openNewDeckModal"
-                    class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    New Deck
-                </button>
+                <div class="flex items-center gap-2">
+                    <Link
+                        v-if="totalDue > 0"
+                        :href="route('review.all')"
+                        class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                    >
+                        Review All
+                        <span class="bg-green-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">{{ totalDue }}</span>
+                    </Link>
+                    <button
+                        @click="openNewDeckModal"
+                        class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        New Deck
+                    </button>
+                </div>
             </div>
 
             <!-- Empty state -->
