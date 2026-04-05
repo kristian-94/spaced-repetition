@@ -90,12 +90,7 @@ function formatDate(dateStr) {
             <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
                 <h2 class="text-base font-semibold text-gray-900 dark:text-white mb-1">Telegram Notifications</h2>
                 <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                    Get daily reminders when cards are due. To get your Chat ID:
-                    <ol class="list-decimal list-inside mt-1 space-y-0.5">
-                        <li>Start a chat with your bot</li>
-                        <li>Send any message to it</li>
-                        <li>Visit <code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">https://api.telegram.org/bot{TOKEN}/getUpdates</code> to see your chat ID</li>
-                    </ol>
+                    Get daily reminders when cards are due. Send a message to <a href="https://t.me/kristian_claude_bot" target="_blank" class="text-blue-500 hover:underline">@kristian_claude_bot</a> on Telegram, then enter your Chat ID below.
                 </p>
                 <form @submit.prevent="saveSettings" class="space-y-4">
                     <div>
