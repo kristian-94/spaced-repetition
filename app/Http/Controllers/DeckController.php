@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Deck;
+use App\Models\ReviewLog;
 use App\Services\FsrsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,8 +17,27 @@ class DeckController extends Controller
 
     public function index()
     {
+        $userId = Auth::id();
+
+        // New cards introduced per day for last 7 days (across all decks)
+        $newPerDay = ReviewLog::where('user_id', $userId)
+            ->where('state_before', 0)
+            ->where('reviewed_at', '>=', now()->subDays(6)->startOfDay())
+            ->selectRaw('DATE(reviewed_at) as date, COUNT(DISTINCT card_id) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('count', 'date');
+
+        // Fill in zeros for missing days
+        $newPerDayFilled = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $date = now()->subDays($i)->format('Y-m-d');
+            $newPerDayFilled[$date] = $newPerDay[$date] ?? 0;
+        }
+
         $decks = Auth::user()->decks()
             ->withCount('cards')
+            ->withCount(['cards as active_count' => fn($q) => $q->where('fsrs_state', '>', 0)])
             ->orderBy('name')
             ->get()
             ->map(function ($deck) {
@@ -26,8 +46,9 @@ class DeckController extends Controller
             });
 
         return Inertia::render('Decks/Index', [
-            'decks'    => $decks,
-            'totalDue' => $decks->sum('due_count'),
+            'decks'      => $decks,
+            'totalDue'   => $decks->sum('due_count'),
+            'newPerDay'  => $newPerDayFilled,
         ]);
     }
 

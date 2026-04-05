@@ -1,12 +1,22 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { Link, router, useForm } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
 const props = defineProps({
     decks: Array,
     totalDue: Number,
+    newPerDay: Object,
 });
+
+const totalActive = computed(() => props.decks.reduce((sum, d) => sum + (d.active_count ?? 0), 0));
+
+const newPerDayEntries = computed(() => Object.entries(props.newPerDay ?? {}).map(([date, count]) => ({
+    label: new Date(date + 'T00:00:00').toLocaleDateString('en', { weekday: 'short', month: 'short', day: 'numeric' }),
+    count,
+})));
+
+const maxNewPerDay = computed(() => Math.max(...newPerDayEntries.value.map(e => e.count), 1));
 
 const showNewDeckModal = ref(false);
 const showEditDeckModal = ref(false);
@@ -127,6 +137,36 @@ const deckColors = [
                 </div>
             </div>
 
+            <!-- Stats bar -->
+            <div v-if="decks.length > 0" class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 mb-6">
+                <div class="flex items-center gap-6 mb-4">
+                    <div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">Active cards</p>
+                        <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ totalActive }}</p>
+                    </div>
+                    <div v-if="totalDue > 0">
+                        <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">Due now</p>
+                        <p class="text-2xl font-bold text-blue-600">{{ totalDue }}</p>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium mb-2">New cards introduced — last 7 days</p>
+                <div class="flex items-end gap-1.5 h-16">
+                    <div
+                        v-for="entry in newPerDayEntries"
+                        :key="entry.label"
+                        class="flex-1 flex flex-col items-center gap-1"
+                    >
+                        <span class="text-xs text-gray-500 dark:text-gray-400">{{ entry.count || '' }}</span>
+                        <div
+                            class="w-full rounded-t"
+                            :class="entry.count > 0 ? 'bg-blue-500' : 'bg-gray-100 dark:bg-gray-800'"
+                            :style="{ height: entry.count > 0 ? `${Math.max(8, Math.round((entry.count / maxNewPerDay) * 40))}px` : '4px' }"
+                        ></div>
+                        <span class="text-xs text-gray-400 dark:text-gray-500 truncate w-full text-center">{{ entry.label.split(',')[0] }}</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- Empty state -->
             <div v-if="decks.length === 0" class="text-center py-16">
                 <div class="text-5xl mb-4">📚</div>
@@ -184,6 +224,9 @@ const deckColors = [
                         <div class="flex items-center gap-3 mt-4">
                             <span class="text-sm text-gray-500 dark:text-gray-400">
                                 {{ deck.cards_count }} cards
+                            </span>
+                            <span v-if="deck.active_count > 0" class="text-sm text-gray-500 dark:text-gray-400">
+                                {{ deck.active_count }} active
                             </span>
                             <span
                                 v-if="deck.due_count > 0"
