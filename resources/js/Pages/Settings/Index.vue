@@ -5,6 +5,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 
 const props = defineProps({
     telegram_chat_id: String,
+    daily_new_cards_limit: Number,
     tokens: Array,
 });
 
@@ -14,6 +15,7 @@ const copied = ref(false);
 
 const settingsForm = useForm({
     telegram_chat_id: props.telegram_chat_id ?? '',
+    daily_new_cards_limit: props.daily_new_cards_limit ?? 20,
 });
 
 const tokenForm = useForm({
@@ -84,6 +86,36 @@ function formatDate(dateStr) {
                         {{ copied ? 'Copied!' : 'Copy' }}
                     </button>
                 </div>
+            </div>
+
+            <!-- Learning section -->
+            <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                <h2 class="text-base font-semibold text-gray-900 dark:text-white mb-1">Learning</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                    Cap how many new cards you see across all decks each day. Reviews of already-seen cards are not affected.
+                </p>
+                <form @submit.prevent="saveSettings" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            New cards per day (all decks combined)
+                        </label>
+                        <input
+                            v-model.number="settingsForm.daily_new_cards_limit"
+                            type="number"
+                            min="1"
+                            max="9999"
+                            class="w-32 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+                        />
+                        <p v-if="settingsForm.errors.daily_new_cards_limit" class="text-red-500 text-xs mt-1">{{ settingsForm.errors.daily_new_cards_limit }}</p>
+                    </div>
+                    <button
+                        type="submit"
+                        :disabled="settingsForm.processing"
+                        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-colors"
+                    >
+                        Save
+                    </button>
+                </form>
             </div>
 
             <!-- Telegram section -->

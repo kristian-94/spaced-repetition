@@ -16,6 +16,7 @@ class SettingsController extends Controller
 
         return Inertia::render('Settings/Index', [
             'telegram_chat_id' => $user->telegram_chat_id,
+            'daily_new_cards_limit' => $user->daily_new_cards_limit ?? 20,
             'tokens' => $tokens,
         ]);
     }
@@ -24,6 +25,7 @@ class SettingsController extends Controller
     {
         $validated = $request->validate([
             'telegram_chat_id' => 'nullable|string|max:100',
+            'daily_new_cards_limit' => 'required|integer|min:1|max:9999',
         ]);
 
         Auth::user()->update($validated);

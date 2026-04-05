@@ -54,14 +54,14 @@ class FsrsService
     }
 
     /**
-     * Get the count of due cards for a deck, respecting the new_cards_per_day limit.
+     * Get the count of due cards for a deck, respecting the global daily new card limit.
      */
     public function getDueCount(Deck $deck): int
     {
         $reviewDue = $deck->cards()->dueToday()->where('fsrs_state', '>', 0)->count();
 
-        $limit = $deck->new_cards_per_day ?: 20;
-        $newSeenToday = $this->newCardsSeenToday($deck);
+        $limit = $deck->user->daily_new_cards_limit ?: 20;
+        $newSeenToday = $this->newCardsSeenTodayForUser($deck->user_id);
         $newDue = min(
             max(0, $limit - $newSeenToday),
             $deck->cards()->dueToday()->where('fsrs_state', 0)->count()
@@ -71,7 +71,7 @@ class FsrsService
     }
 
     /**
-     * Get the next card to review for a deck, respecting the new_cards_per_day limit.
+     * Get the next card to review for a deck, respecting the global daily new card limit.
      * Already-seen cards (state > 0) that are due are always shown first.
      */
     public function getNextCard(Deck $deck): ?Card
@@ -87,9 +87,9 @@ class FsrsService
             return $reviewCard;
         }
 
-        // New cards: respect the daily limit
-        $limit = $deck->new_cards_per_day ?: 20;
-        if ($this->newCardsSeenToday($deck) >= $limit) {
+        // New cards: respect the global daily limit across all decks
+        $limit = $deck->user->daily_new_cards_limit ?: 20;
+        if ($this->newCardsSeenTodayForUser($deck->user_id) >= $limit) {
             return null;
         }
 
@@ -100,11 +100,11 @@ class FsrsService
             ->first();
     }
 
-    private function newCardsSeenToday(Deck $deck): int
+    private function newCardsSeenTodayForUser(int $userId): int
     {
-        return ReviewLog::where('deck_id', $deck->id)
+        return ReviewLog::where('user_id', $userId)
             ->whereDate('reviewed_at', today())
-            ->whereIn('state_before', [0])
+            ->where('state_before', 0)
             ->distinct('card_id')
             ->count('card_id');
     }
