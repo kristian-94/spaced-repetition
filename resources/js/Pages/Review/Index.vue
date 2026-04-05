@@ -82,6 +82,11 @@ function formatNextDue(dateStr) {
 // Text-to-speech
 const speakingText = ref(null);
 
+function stripPhonetics(text) {
+    // Remove parenthetical phonetic hints like "(chow boo-ee toy)" — whole lines or inline
+    return text.replace(/\s*\([^)]*\)/g, '').trim();
+}
+
 function speak(text) {
     if (!window.speechSynthesis) return;
 
@@ -94,7 +99,7 @@ function speak(text) {
 
     window.speechSynthesis.cancel();
 
-    const utterance = new SpeechSynthesisUtterance(text);
+    const utterance = new SpeechSynthesisUtterance(stripPhonetics(text));
     utterance.lang = props.deck?.tts_language ?? 'vi-VN';
 
     // Use an explicit matching voice if available (may be empty on first call — that's OK,
