@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { Link, router, useForm } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
@@ -7,6 +7,47 @@ const props = defineProps({
     deck: Object,
     cards: Object, // paginated
 });
+
+// Infinite scroll — accumulate cards across pages
+const allCards = ref([...props.cards.data]);
+const hasMore = ref(props.cards.current_page < props.cards.last_page);
+const loadingMore = ref(false);
+const sentinel = ref(null);
+let observer = null;
+
+// When Inertia delivers a new page of cards, append them (reset on page 1)
+watch(() => props.cards, (newCards) => {
+    if (newCards.current_page === 1) {
+        allCards.value = [...newCards.data];
+    } else {
+        allCards.value = [...allCards.value, ...newCards.data];
+    }
+    hasMore.value = newCards.current_page < newCards.last_page;
+    loadingMore.value = false;
+});
+
+function loadMore() {
+    if (loadingMore.value || !hasMore.value) return;
+    loadingMore.value = true;
+    router.get(
+        route('cards.index', props.deck.id),
+        { page: props.cards.current_page + 1 },
+        { preserveState: true, preserveScroll: true, only: ['cards'] }
+    );
+}
+
+onMounted(() => {
+    observer = new IntersectionObserver(
+        (entries) => { if (entries[0].isIntersecting) loadMore(); },
+        { rootMargin: '200px' }
+    );
+    // sentinel may not be in DOM yet if rendered inside v-else; watch for it
+    watch(sentinel, (el) => {
+        if (el) observer.observe(el);
+    }, { immediate: true });
+});
+
+onUnmounted(() => observer?.disconnect());
 
 const showAddCardModal = ref(false);
 const showEditCardModal = ref(false);
@@ -126,7 +167,7 @@ function formatDate(dateStr) {
             </div>
 
             <!-- Empty state -->
-            <div v-if="cards.data.length === 0" class="text-center py-16">
+            <div v-if="allCards.length === 0" class="text-center py-16">
                 <div class="text-5xl mb-4">✏️</div>
                 <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No cards yet</h2>
                 <p class="text-gray-500 dark:text-gray-400 mb-6">Add your first card to this deck.</p>
@@ -152,7 +193,7 @@ function formatDate(dateStr) {
                     </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
                         <tr
-                            v-for="card in cards.data"
+                            v-for="card in allCards"
                             :key="card.id"
                             :class="card.is_suspended ? 'opacity-50' : ''"
                             class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
@@ -206,27 +247,9 @@ function formatDate(dateStr) {
                     </tbody>
                 </table>
 
-                <!-- Pagination -->
-                <div v-if="cards.last_page > 1" class="px-4 py-3 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                        Page {{ cards.current_page }} of {{ cards.last_page }}
-                    </p>
-                    <div class="flex gap-2">
-                        <Link
-                            v-if="cards.prev_page_url"
-                            :href="cards.prev_page_url"
-                            class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                        >
-                            Previous
-                        </Link>
-                        <Link
-                            v-if="cards.next_page_url"
-                            :href="cards.next_page_url"
-                            class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                        >
-                            Next
-                        </Link>
-                    </div>
+                <!-- Infinite scroll sentinel -->
+                <div ref="sentinel" class="px-4 py-3 border-t border-gray-100 dark:border-gray-800 text-center text-sm text-gray-400 dark:text-gray-600">
+                    <span v-if="loadingMore">Loading…</span>
                 </div>
             </div>
         </div>

@@ -17,7 +17,7 @@ class CardController extends Controller
 
         $cards = $deck->cards()
             ->orderBy('fsrs_due', 'asc')
-            ->paginate(50)
+            ->paginate(25)
             ->through(function ($card) {
                 $card->front_image_url = $card->front_image
                     ? Storage::url($card->front_image)
