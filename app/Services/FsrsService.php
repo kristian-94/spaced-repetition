@@ -60,7 +60,7 @@ class FsrsService
     {
         $reviewDue = $deck->cards()->dueToday()->where('fsrs_state', '>', 0)->count();
 
-        $limit = $deck->new_cards_per_day ?? 20;
+        $limit = $deck->new_cards_per_day ?: 20;
         $newSeenToday = $this->newCardsSeenToday($deck);
         $newDue = min(
             max(0, $limit - $newSeenToday),
@@ -88,7 +88,7 @@ class FsrsService
         }
 
         // New cards: respect the daily limit
-        $limit = $deck->new_cards_per_day ?? 20;
+        $limit = $deck->new_cards_per_day ?: 20;
         if ($this->newCardsSeenToday($deck) >= $limit) {
             return null;
         }
