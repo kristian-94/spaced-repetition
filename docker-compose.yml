@@ -1,36 +1,50 @@
+x-base: &base
+  build:
+    context: .
+    args:
+      VITE_APP_NAME: "Spaced Repetition"
+  environment:
+    - DB_DATABASE=/app/database/sqlite/database.sqlite
+  volumes:
+    - ./.env:/app/.env:ro
+    # Bind-mount PHP source — changes are live without rebuilding the image.
+    # vendor/ and public/build/ stay in the image (built during docker build).
+    - ./app:/app/app
+    - ./config:/app/config
+    - ./routes:/app/routes
+    - ./resources:/app/resources
+    - ./database/migrations:/app/database/migrations
+    - ./database/seeders:/app/database/seeders
+    - db-data:/app/database/sqlite
+    - storage-data:/app/storage
+  restart: unless-stopped
+
 services:
   app:
-    build:
-      context: .
-      args:
-        VITE_APP_NAME: "Spaced Repetition"
-    command: php artisan serve --host=0.0.0.0 --port=8000
+    <<: *base
+    # Clear caches on startup so config/route changes after git pull take effect.
+    command: >
+      sh -c "php artisan config:clear &&
+             php artisan route:clear &&
+             php artisan migrate --force --no-interaction &&
+             php artisan serve --host=0.0.0.0 --port=8000 --no-reload"
     environment:
       - PHP_CLI_SERVER_WORKERS=4
       - DB_DATABASE=/app/database/sqlite/database.sqlite
     ports:
       - "8200:8000"
-    volumes:
-      - ./.env:/app/.env:ro
-      - db-data:/app/database/sqlite
-      - storage-data:/app/storage
-    restart: unless-stopped
 
   queue:
-    build:
-      context: .
-      args:
-        VITE_APP_NAME: "Spaced Repetition"
+    <<: *base
     command: php artisan queue:work --tries=1 --sleep=3
-    environment:
-      - DB_DATABASE=/app/database/sqlite/database.sqlite
-    volumes:
-      - ./.env:/app/.env:ro
-      - db-data:/app/database/sqlite
-      - storage-data:/app/storage
     depends_on:
       - app
-    restart: unless-stopped
+
+  scheduler:
+    <<: *base
+    command: php artisan schedule:work
+    depends_on:
+      - app
 
 volumes:
   db-data:
