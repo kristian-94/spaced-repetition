@@ -80,6 +80,9 @@ Session.vim
 .continue/
 CLAUDE.local.md
 
+# Buckets (private card content)
+/buckets/
+
 # Misc
 *.bak
 *.tmp
