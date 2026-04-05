@@ -24,7 +24,23 @@ const editDeckForm = useForm({
     is_active: false,
     color: '',
     new_cards_per_day: 20,
+    tts_language: '',
 });
+
+const ttsLanguages = [
+    { value: '', label: 'Off' },
+    { value: 'vi-VN', label: 'Vietnamese' },
+    { value: 'zh-CN', label: 'Chinese (Mandarin)' },
+    { value: 'zh-TW', label: 'Chinese (Traditional)' },
+    { value: 'ja-JP', label: 'Japanese' },
+    { value: 'ko-KR', label: 'Korean' },
+    { value: 'fr-FR', label: 'French' },
+    { value: 'de-DE', label: 'German' },
+    { value: 'es-ES', label: 'Spanish' },
+    { value: 'pt-BR', label: 'Portuguese (Brazil)' },
+    { value: 'ru-RU', label: 'Russian' },
+    { value: 'ar-SA', label: 'Arabic' },
+];
 
 function openNewDeckModal() {
     newDeckForm.reset();
@@ -38,6 +54,7 @@ function openEditDeckModal(deck) {
     editDeckForm.is_active = deck.is_active;
     editDeckForm.color = deck.color ?? '';
     editDeckForm.new_cards_per_day = deck.new_cards_per_day ?? 20;
+    editDeckForm.tts_language = deck.tts_language ?? '';
     showEditDeckModal.value = true;
 }
 
@@ -336,6 +353,15 @@ const deckColors = [
                                     max="9999"
                                     class="w-24 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
                                 />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Text-to-speech language</label>
+                                <select
+                                    v-model="editDeckForm.tts_language"
+                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
+                                >
+                                    <option v-for="lang in ttsLanguages" :key="lang.value" :value="lang.value">{{ lang.label }}</option>
+                                </select>
                             </div>
                             <div class="flex gap-3 pt-2">
                                 <button

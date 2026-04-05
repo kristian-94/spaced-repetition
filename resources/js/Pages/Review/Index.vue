@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { Link, router, useForm } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
@@ -44,6 +44,10 @@ function submitRating(rating) {
             isSubmitting.value = false;
             showAnswer.value = false;
             startTime.value = Date.now();
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+                speakingText.value = null;
+            }
         },
     });
 }
@@ -73,6 +77,37 @@ function formatNextDue(dateStr) {
     if (!dateStr) return null;
     const d = new Date(dateStr);
     return d.toLocaleString();
+}
+
+// Text-to-speech
+const speakingText = ref(null);
+
+function speak(text) {
+    if (!window.speechSynthesis) return;
+
+    // Toggle off if already speaking this text
+    if (speakingText.value === text) {
+        window.speechSynthesis.cancel();
+        speakingText.value = null;
+        return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = props.deck?.tts_language ?? 'vi-VN';
+
+    // Use an explicit matching voice if available (may be empty on first call — that's OK,
+    // lang is enough for the browser/OS to pick the right voice automatically)
+    const langPrefix = utterance.lang.split('-')[0];
+    const viVoice = window.speechSynthesis.getVoices().find(v => v.lang.startsWith(langPrefix));
+    if (viVoice) utterance.voice = viVoice;
+
+    utterance.onend = () => { speakingText.value = null; };
+    utterance.onerror = () => { speakingText.value = null; };
+
+    speakingText.value = text;
+    window.speechSynthesis.speak(utterance);
 }
 
 const ratingButtons = [
@@ -136,7 +171,19 @@ const ratingButtons = [
                 <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden mb-6">
                     <!-- Front -->
                     <div class="p-8">
-                        <div class="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-4">Question</div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide">Question</div>
+                            <button
+                                v-if="deck.tts_language"
+                                @click="speak(card.front_content)"
+                                :class="['p-1.5 rounded-lg transition-colors', speakingText === card.front_content ? 'text-blue-500 bg-blue-50 dark:bg-blue-900/30' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800']"
+                                title="Speak (Vietnamese)"
+                            >
+                                <svg class="w-4 h-4" :class="{ 'animate-pulse': speakingText === card.front_content }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                </svg>
+                            </button>
+                        </div>
                         <div class="text-lg text-gray-900 dark:text-white leading-relaxed whitespace-pre-wrap">{{ card.front_content }}</div>
                         <div v-if="card.front_image_url" class="mt-4">
                             <img :src="card.front_image_url" alt="Front image" class="max-w-full rounded-lg max-h-64 object-contain" />
@@ -145,7 +192,19 @@ const ratingButtons = [
 
                     <!-- Answer reveal -->
                     <div v-if="showAnswer" class="border-t border-gray-200 dark:border-gray-800 p-8">
-                        <div class="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-4">Answer</div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide">Answer</div>
+                            <button
+                                v-if="deck.tts_language"
+                                @click="speak(card.back_content)"
+                                :class="['p-1.5 rounded-lg transition-colors', speakingText === card.back_content ? 'text-blue-500 bg-blue-50 dark:bg-blue-900/30' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800']"
+                                title="Speak (Vietnamese)"
+                            >
+                                <svg class="w-4 h-4" :class="{ 'animate-pulse': speakingText === card.back_content }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                                </svg>
+                            </button>
+                        </div>
                         <div class="text-lg text-gray-900 dark:text-white leading-relaxed whitespace-pre-wrap">{{ card.back_content }}</div>
                         <div v-if="card.back_image_url" class="mt-4">
                             <img :src="card.back_image_url" alt="Back image" class="max-w-full rounded-lg max-h-64 object-contain" />

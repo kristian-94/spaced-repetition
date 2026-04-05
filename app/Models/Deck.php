@@ -16,6 +16,7 @@ class Deck extends Model
         'is_active',
         'color',
         'new_cards_per_day',
+        'tts_language',
     ];
 
     protected $casts = [
