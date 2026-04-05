@@ -103,9 +103,15 @@ class ApiController extends Controller
                 $cardFields['back_image_url'] = $validated['back_image_url'];
             }
 
-            $existing = $deck->cards()
-                ->where('front_content', $frontContent)
-                ->first();
+            $query = $deck->cards()->where('front_content', $frontContent);
+            // If the card has a front image URL, include it in the match so
+            // multiple image cards with the same question text are distinct.
+            if (!empty($cardFields['front_image_url'])) {
+                $query->where('front_image_url', $cardFields['front_image_url']);
+            } else {
+                $query->whereNull('front_image_url');
+            }
+            $existing = $query->first();
 
             if ($existing) {
                 unset($cardFields['user_id'], $cardFields['fsrs_due']);
