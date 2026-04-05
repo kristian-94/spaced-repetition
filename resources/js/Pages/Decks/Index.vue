@@ -7,6 +7,8 @@ const props = defineProps({
     decks: Array,
     totalDue: Number,
     newPerDay: Object,
+    newCardsToday: Number,
+    dailyLimit: Number,
 });
 
 const totalActive = computed(() => props.decks.reduce((sum, d) => sum + (d.active_count ?? 0), 0));
@@ -148,6 +150,10 @@ const deckColors = [
                         <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">Due now</p>
                         <p class="text-2xl font-bold text-blue-600">{{ totalDue }}</p>
                     </div>
+                    <div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">New cards today</p>
+                        <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ newCardsToday }} <span class="text-sm font-normal text-gray-400">/ {{ dailyLimit }}</span></p>
+                    </div>
                 </div>
                 <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium mb-2">New cards introduced — last 7 days</p>
                 <div class="flex items-end gap-1.5 h-16">
@@ -221,12 +227,15 @@ const deckColors = [
                         </div>
 
                         <!-- Stats row -->
-                        <div class="flex items-center gap-3 mt-4">
+                        <div class="flex items-center gap-3 mt-4 flex-wrap">
                             <span class="text-sm text-gray-500 dark:text-gray-400">
-                                {{ deck.cards_count }} cards
+                                {{ deck.cards_count }} total
                             </span>
                             <span v-if="deck.active_count > 0" class="text-sm text-gray-500 dark:text-gray-400">
                                 {{ deck.active_count }} active
+                            </span>
+                            <span v-if="deck.new_today > 0" class="text-sm text-gray-500 dark:text-gray-400">
+                                {{ deck.new_today }} new today
                             </span>
                             <span
                                 v-if="deck.due_count > 0"

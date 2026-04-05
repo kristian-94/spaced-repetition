@@ -23,7 +23,11 @@ RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
     unzip \
     curl \
-    && docker-php-ext-install pdo pdo_sqlite pcntl \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo pdo_sqlite pcntl gd \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Composer

@@ -25,7 +25,7 @@ class SettingsController extends Controller
     {
         $validated = $request->validate([
             'telegram_chat_id' => 'nullable|string|max:100',
-            'daily_new_cards_limit' => 'required|integer|min:1|max:9999',
+            'daily_new_cards_limit' => 'sometimes|integer|min:1|max:9999',
         ]);
 
         Auth::user()->update($validated);

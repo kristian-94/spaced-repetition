@@ -102,8 +102,12 @@ class FsrsService
 
     private function newCardsSeenTodayForUser(int $userId): int
     {
+        $sydney     = 'Australia/Sydney';
+        $todayStart = now($sydney)->startOfDay()->utc();
+        $todayEnd   = now($sydney)->endOfDay()->utc();
+
         return ReviewLog::where('user_id', $userId)
-            ->whereDate('reviewed_at', today())
+            ->whereBetween('reviewed_at', [$todayStart, $todayEnd])
             ->where('state_before', 0)
             ->distinct('card_id')
             ->count('card_id');
