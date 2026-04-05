@@ -37,6 +37,7 @@ function loadMore() {
 }
 
 onMounted(() => {
+    window.addEventListener('keydown', handlePreviewKey);
     observer = new IntersectionObserver(
         (entries) => { if (entries[0].isIntersecting) loadMore(); },
         { rootMargin: '200px' }
@@ -47,11 +48,32 @@ onMounted(() => {
     }, { immediate: true });
 });
 
-onUnmounted(() => observer?.disconnect());
+onUnmounted(() => {
+    observer?.disconnect();
+    window.removeEventListener('keydown', handlePreviewKey);
+});
 
 const showAddCardModal = ref(false);
 const showEditCardModal = ref(false);
+const showPreviewModal = ref(false);
 const editingCard = ref(null);
+const previewCard = ref(null);
+const previewShowAnswer = ref(false);
+
+function openPreviewModal(card) {
+    previewCard.value = card;
+    previewShowAnswer.value = false;
+    showPreviewModal.value = true;
+}
+
+function handlePreviewKey(e) {
+    if (!showPreviewModal.value) return;
+    if (e.key === 'Escape') { showPreviewModal.value = false; return; }
+    if (!previewShowAnswer.value && (e.code === 'Space' || e.code === 'Enter')) {
+        e.preventDefault();
+        previewShowAnswer.value = true;
+    }
+}
 
 const addCardForm = useForm({
     front_content: '',
@@ -215,6 +237,16 @@ function formatDate(dateStr) {
                             <td class="px-4 py-3">
                                 <div class="flex items-center justify-end gap-1">
                                     <button
+                                        @click="openPreviewModal(card)"
+                                        class="p-1.5 rounded-md text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+                                        title="Preview"
+                                    >
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                    </button>
+                                    <button
                                         @click="openEditCardModal(card)"
                                         class="p-1.5 rounded-md text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                                         title="Edit"
@@ -253,6 +285,49 @@ function formatDate(dateStr) {
                 </div>
             </div>
         </div>
+
+        <!-- Preview Card Modal -->
+        <Teleport to="body">
+            <div v-if="showPreviewModal && previewCard" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" @click.self="showPreviewModal = false">
+                <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-lg">
+                    <div class="flex items-center justify-between px-6 pt-5 pb-3 border-b border-gray-100 dark:border-gray-800">
+                        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Preview</span>
+                        <button @click="showPreviewModal = false" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <!-- Front -->
+                        <div>
+                            <div class="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2">Question</div>
+                            <div class="text-base text-gray-900 dark:text-white leading-relaxed whitespace-pre-wrap">{{ previewCard.front_content }}</div>
+                            <div v-if="previewCard.front_image_url" class="mt-3">
+                                <img :src="previewCard.front_image_url" alt="Front image" class="max-w-full rounded-lg max-h-56 object-contain" />
+                            </div>
+                        </div>
+                        <!-- Back -->
+                        <div v-if="previewShowAnswer" class="border-t border-gray-200 dark:border-gray-800 pt-4">
+                            <div class="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2">Answer</div>
+                            <div class="text-base text-gray-900 dark:text-white leading-relaxed whitespace-pre-wrap">{{ previewCard.back_content }}</div>
+                            <div v-if="previewCard.back_image_url" class="mt-3">
+                                <img :src="previewCard.back_image_url" alt="Back image" class="max-w-full rounded-lg max-h-56 object-contain" />
+                            </div>
+                        </div>
+                        <div v-else class="pt-1">
+                            <button
+                                @click="previewShowAnswer = true"
+                                class="w-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 py-2.5 rounded-xl text-sm font-medium transition-colors"
+                            >
+                                Show Answer
+                            </button>
+                            <p class="text-xs text-center text-gray-400 dark:text-gray-600 mt-1.5">Press Space or Enter</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Teleport>
 
         <!-- Add Card Modal -->
         <Teleport to="body">
