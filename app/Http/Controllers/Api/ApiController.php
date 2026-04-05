@@ -103,7 +103,17 @@ class ApiController extends Controller
                 $cardFields['back_image_url'] = $validated['back_image_url'];
             }
 
-            $created[] = $deck->cards()->create($cardFields);
+            $existing = $deck->cards()
+                ->where('front_content', $frontContent)
+                ->first();
+
+            if ($existing) {
+                unset($cardFields['user_id'], $cardFields['fsrs_due']);
+                $existing->update($cardFields);
+                $created[] = $existing;
+            } else {
+                $created[] = $deck->cards()->create($cardFields);
+            }
         }
 
         return response()->json(['data' => $created, 'count' => count($created)], 201);
