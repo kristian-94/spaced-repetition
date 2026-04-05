@@ -71,6 +71,8 @@ class ApiController extends Controller
                 'back_content' => 'sometimes|required_without:back|string',
                 'front_image_base64' => 'nullable|string',
                 'back_image_base64' => 'nullable|string',
+                'front_image_url' => 'nullable|string|url',
+                'back_image_url' => 'nullable|string|url',
                 'card_type' => 'nullable|string|in:basic',
             ])->validate();
 
@@ -91,6 +93,14 @@ class ApiController extends Controller
             }
             if (!empty($validated['back_image_base64'])) {
                 $cardFields['back_image'] = $this->storeBase64Image($validated['back_image_base64']);
+            }
+
+            // Handle external image URLs
+            if (!empty($validated['front_image_url'])) {
+                $cardFields['front_image_url'] = $validated['front_image_url'];
+            }
+            if (!empty($validated['back_image_url'])) {
+                $cardFields['back_image_url'] = $validated['back_image_url'];
             }
 
             $created[] = $deck->cards()->create($cardFields);

@@ -21,10 +21,10 @@ class CardController extends Controller
             ->through(function ($card) {
                 $card->front_image_url = $card->front_image
                     ? Storage::url($card->front_image)
-                    : null;
+                    : $card->front_image_url;
                 $card->back_image_url = $card->back_image
                     ? Storage::url($card->back_image)
-                    : null;
+                    : $card->back_image_url;
                 return $card;
             });
 

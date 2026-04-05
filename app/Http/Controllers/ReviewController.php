@@ -25,10 +25,10 @@ class ReviewController extends Controller
         if ($card) {
             $card->front_image_url = $card->front_image
                 ? Storage::url($card->front_image)
-                : null;
+                : $card->front_image_url;
             $card->back_image_url = $card->back_image
                 ? Storage::url($card->back_image)
-                : null;
+                : $card->back_image_url;
         }
 
         // Find next due time for the "all done" message
@@ -66,8 +66,8 @@ class ReviewController extends Controller
         }
 
         if ($card) {
-            $card->front_image_url = $card->front_image ? Storage::url($card->front_image) : null;
-            $card->back_image_url  = $card->back_image  ? Storage::url($card->back_image)  : null;
+            $card->front_image_url = $card->front_image ? Storage::url($card->front_image) : $card->front_image_url;
+            $card->back_image_url  = $card->back_image  ? Storage::url($card->back_image)  : $card->back_image_url;
         }
 
         $totalDue = $decks->sum(fn ($d) => $this->fsrsService->getDueCount($d));
