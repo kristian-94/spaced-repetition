@@ -98,17 +98,34 @@ function toggleActive(deck) {
     router.patch(route('decks.toggleActive', deck.id));
 }
 
-const stateColors = {
-    0: 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400', // new
-    1: 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400', // learning
-    2: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400', // review
-    3: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400', // relearning
-};
 
 const deckColors = [
     '', '#3b82f6', '#8b5cf6', '#ec4899', '#ef4444',
     '#f97316', '#eab308', '#22c55e', '#14b8a6', '#06b6d4',
 ];
+
+const sparkTooltip = ref(null); // { deckId, index, value, x, y }
+
+function onSparkMouseMove(event, deck) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const relX = event.clientX - rect.left;
+    const fraction = relX / rect.width;
+    const len = deck.mastered_trend.length;
+    const index = Math.max(0, Math.min(Math.round(fraction * (len - 1)), len - 1));
+    sparkTooltip.value = {
+        deckId: deck.id,
+        index,
+        value: deck.mastered_trend[index],
+        daysAgo: (len - 1) - index,
+        x: event.clientX,
+        y: event.clientY,
+    };
+}
+
+function onSparkMouseLeave() {
+    sparkTooltip.value = null;
+}
+
 </script>
 
 <template>
@@ -281,20 +298,35 @@ const deckColors = [
                         <!-- Mastered trend sparkline -->
                         <div v-if="deck.mastered_trend && Math.max(...deck.mastered_trend) > 0" class="mt-3">
                             <p class="text-xs text-gray-400 dark:text-gray-500 mb-1">Mastered — 30 days</p>
-                            <svg :viewBox="`0 0 ${deck.mastered_trend.length - 1} 20`" class="w-full h-8" preserveAspectRatio="none">
+                            <svg
+                                :viewBox="`0 0 ${deck.mastered_trend.length - 1} 30`"
+                                class="w-full h-14 cursor-crosshair"
+                                preserveAspectRatio="none"
+                                @mousemove="onSparkMouseMove($event, deck)"
+                                @mouseleave="onSparkMouseLeave"
+                            >
+                                <polygon
+                                    :points="`0,30 ${deck.mastered_trend.map((v, i) => `${i},${30 - (v / Math.max(...deck.mastered_trend)) * 26}`).join(' ')} ${deck.mastered_trend.length - 1},30`"
+                                    fill="#22c55e"
+                                    fill-opacity="0.12"
+                                />
                                 <polyline
-                                    :points="deck.mastered_trend.map((v, i) => `${i},${20 - (v / Math.max(...deck.mastered_trend)) * 18}`).join(' ')"
+                                    :points="deck.mastered_trend.map((v, i) => `${i},${30 - (v / Math.max(...deck.mastered_trend)) * 26}`).join(' ')"
                                     fill="none"
                                     stroke="#22c55e"
-                                    stroke-width="1.2"
+                                    stroke-width="1.5"
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
                                     vector-effect="non-scaling-stroke"
                                 />
-                                <polygon
-                                    :points="`0,20 ${deck.mastered_trend.map((v, i) => `${i},${20 - (v / Math.max(...deck.mastered_trend)) * 18}`).join(' ')} ${deck.mastered_trend.length - 1},20`"
+                                <!-- Hover dot -->
+                                <circle
+                                    v-if="sparkTooltip && sparkTooltip.deckId === deck.id"
+                                    :cx="sparkTooltip.index"
+                                    :cy="30 - (deck.mastered_trend[sparkTooltip.index] / Math.max(...deck.mastered_trend)) * 26"
+                                    r="2"
                                     fill="#22c55e"
-                                    fill-opacity="0.1"
+                                    vector-effect="non-scaling-stroke"
                                 />
                             </svg>
                         </div>
@@ -434,6 +466,18 @@ const deckColors = [
                         </form>
                     </div>
                 </div>
+            </div>
+        </Teleport>
+
+        <!-- Sparkline tooltip -->
+        <Teleport to="body">
+            <div
+                v-if="sparkTooltip"
+                class="fixed z-50 pointer-events-none bg-gray-900 dark:bg-gray-700 text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap"
+                :style="{ left: sparkTooltip.x + 12 + 'px', top: sparkTooltip.y - 32 + 'px' }"
+            >
+                {{ sparkTooltip.value }} mastered
+                <span class="text-gray-400 ml-1">{{ sparkTooltip.daysAgo === 0 ? 'today' : `${sparkTooltip.daysAgo}d ago` }}</span>
             </div>
         </Teleport>
 
