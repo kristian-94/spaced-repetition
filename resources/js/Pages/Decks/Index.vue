@@ -190,7 +190,7 @@ const deckColors = [
 
             <!-- Deck grid -->
             <div v-else>
-                <div class="grid gap-4 sm:grid-cols-2">
+            <div class="grid gap-4 sm:grid-cols-2">
                 <div
                     v-for="deck in activeDecks"
                     :key="deck.id"
@@ -306,6 +306,7 @@ const deckColors = [
                         <!-- Action buttons -->
                         <div class="flex items-center gap-2 mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
                             <Link
+                                v-if="deck.is_active"
                                 :href="route('review.index', deck.id)"
                                 class="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors"
                             >
@@ -319,51 +320,53 @@ const deckColors = [
                             </Link>
                             <button
                                 @click="toggleActive(deck)"
-                                title="Deactivate deck"
-                                class="px-3 py-2 rounded-lg text-sm font-medium transition-colors border bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-700 dark:text-green-400"
+                                :title="deck.is_active ? 'Deactivate deck' : 'Activate deck'"
+                                :class="[
+                                    'px-3 py-2 rounded-lg text-sm font-medium transition-colors border',
+                                    deck.is_active
+                                        ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-700 dark:text-green-400'
+                                        : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-500'
+                                ]"
                             >
-                                Active
+                                {{ deck.is_active ? 'Active' : 'Inactive' }}
                             </button>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Inactive decks -->
-                <template v-if="inactiveDecks.length > 0">
-                    <hr class="my-6 border-gray-200 dark:border-gray-800" />
-                    <div class="grid gap-4 sm:grid-cols-2">
-                        <div
-                            v-for="deck in inactiveDecks"
-                            :key="deck.id"
-                            class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden opacity-60 hover:opacity-80 transition-opacity"
-                        >
-                            <div v-if="deck.color" class="h-1.5" :style="{ backgroundColor: deck.color }"></div>
-                            <div class="p-5">
-                                <div class="flex items-start justify-between">
-                                    <div class="flex-1 min-w-0 mr-3">
-                                        <h2 class="font-semibold text-gray-900 dark:text-white truncate">{{ deck.name }}</h2>
-                                        <p v-if="deck.description" class="text-sm text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-2">{{ deck.description }}</p>
-                                    </div>
-                                    <div class="flex items-center gap-1 flex-shrink-0">
-                                        <button @click="openEditDeckModal(deck)" class="p-1.5 rounded-md text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" title="Edit deck">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
-                                        </button>
-                                        <button @click="deleteDeck(deck)" class="p-1.5 rounded-md text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" title="Delete deck">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                                        </button>
-                                    </div>
+            <template v-if="inactiveDecks.length > 0">
+                <hr class="my-6 border-gray-200 dark:border-gray-800" />
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div
+                        v-for="deck in inactiveDecks"
+                        :key="deck.id"
+                        class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden opacity-60"
+                    >
+                        <div v-if="deck.color" class="h-1.5" :style="{ backgroundColor: deck.color }"></div>
+                        <div class="p-5">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1 min-w-0 mr-3">
+                                    <h2 class="font-semibold text-gray-900 dark:text-white truncate">{{ deck.name }}</h2>
+                                    <p v-if="deck.description" class="text-sm text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-2">{{ deck.description }}</p>
                                 </div>
-                                <div class="flex items-center gap-2 mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
-                                    <Link :href="route('cards.index', deck.id)" class="flex-1 text-center border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Browse Cards</Link>
-                                    <button
-                                        @click="toggleActive(deck)"
-                                        class="px-3 py-2 rounded-lg text-sm font-medium transition-colors border bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-500"
-                                    >Inactive</button>
+                                <div class="flex items-center gap-1 flex-shrink-0">
+                                    <button @click="openEditDeckModal(deck)" class="p-1.5 rounded-md text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" title="Edit deck">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                                    </button>
+                                    <button @click="deleteDeck(deck)" class="p-1.5 rounded-md text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors" title="Delete deck">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                    </button>
                                 </div>
+                            </div>
+                            <div class="flex items-center gap-2 mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                                <Link :href="route('cards.index', deck.id)" class="flex-1 text-center border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 py-2 rounded-lg text-sm font-medium transition-colors">Browse Cards</Link>
+                                <button @click="toggleActive(deck)" class="px-3 py-2 rounded-lg text-sm font-medium transition-colors border bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500">Inactive</button>
                             </div>
                         </div>
                     </div>
-                </template>
+                </div>
+            </template>
             </div>
         </div>
 
