@@ -95,33 +95,58 @@ def pad_bbox(minx, miny, maxx, maxy, fraction):
     return minx - dx, miny - dy, maxx + dx, maxy + dy
 
 
-def geo_to_svg(lon, lat, vp_minx, vp_miny, vp_maxx, vp_maxy, svg_w, svg_h):
-    """Map geographic coords to SVG pixel coords (Y flipped)."""
-    x = (lon - vp_minx) / (vp_maxx - vp_minx) * svg_w
-    y = (1.0 - (lat - vp_miny) / (vp_maxy - vp_miny)) * svg_h
+def make_projection(vp_minx, vp_miny, vp_maxx, vp_maxy, svg_w, svg_h):
+    """Uniform-scale projection with letterboxing and Mercator Y warping.
+
+    Scale is determined from geographic degrees so both axes use the same
+    unit. Mercator Y warping is applied only to position, keeping shape correct.
+    Returns (minlon, miny, maxy, scale, off_x, off_y).
+    """
+    geo_w = vp_maxx - vp_minx   # degrees longitude
+    geo_h = vp_maxy - vp_miny   # degrees latitude (used only for scale)
+
+    # At the centre latitude, 1 degree longitude = cos(lat) degrees of arc,
+    # so we correct the horizontal extent to match the vertical.
+    mid_lat = math.radians((vp_miny + vp_maxy) / 2)
+    geo_w_corrected = geo_w * math.cos(mid_lat)  # effective width in lat-equivalent degrees
+
+    scale = min(svg_w / geo_w_corrected, svg_h / geo_h)
+
+    render_w = geo_w_corrected * scale
+    render_h = geo_h * scale
+    off_x = (svg_w - render_w) / 2
+    off_y = (svg_h - render_h) / 2
+
+    return (vp_minx, vp_miny, vp_maxy, scale, off_x, off_y, geo_w_corrected / geo_w)
+
+
+def geo_to_svg(lon, lat, proj):
+    minlon, miny, maxy, scale, off_x, off_y, lon_scale = proj
+    x = off_x + (lon - minlon) * lon_scale * scale
+    y = off_y + (maxy - lat) * scale
     return x, y
 
 
-def polygon_to_path(poly, vp_minx, vp_miny, vp_maxx, vp_maxy, svg_w, svg_h):
+def polygon_to_path(poly, proj):
     parts = []
     for ring in [poly.exterior] + list(poly.interiors):
         coords = list(ring.coords)
         if not coords:
             continue
-        pts = [geo_to_svg(lon, lat, vp_minx, vp_miny, vp_maxx, vp_maxy, svg_w, svg_h) for lon, lat in coords]
+        pts = [geo_to_svg(lon, lat, proj) for lon, lat in coords]
         d = "M " + " L ".join(f"{x:.2f},{y:.2f}" for x, y in pts) + " Z"
         parts.append(d)
     return " ".join(parts)
 
 
-def geometry_to_path(geom, vp_minx, vp_miny, vp_maxx, vp_maxy, svg_w, svg_h):
+def geometry_to_path(geom, proj):
     if isinstance(geom, Polygon):
         polys = [geom]
     elif isinstance(geom, MultiPolygon):
         polys = list(geom.geoms)
     else:
         return ""
-    paths = [polygon_to_path(p, vp_minx, vp_miny, vp_maxx, vp_maxy, svg_w, svg_h) for p in polys]
+    paths = [polygon_to_path(p, proj) for p in polys]
     return " ".join(p for p in paths if p)
 
 
@@ -129,6 +154,7 @@ def render_svg(target_geom, neighbour_geoms, all_geoms, all_lakes, vp, svg_w, sv
     from shapely.geometry import box as shapely_box
     vp_minx, vp_miny, vp_maxx, vp_maxy = vp
     vp_box = shapely_box(vp_minx, vp_miny, vp_maxx, vp_maxy)
+    proj = make_projection(vp_minx, vp_miny, vp_maxx, vp_maxy, svg_w, svg_h)
 
     lines = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{svg_w}" height="{svg_h}" viewBox="0 0 {svg_w} {svg_h}">',
@@ -147,7 +173,7 @@ def render_svg(target_geom, neighbour_geoms, all_geoms, all_lakes, vp, svg_w, sv
         clipped = geom.intersection(vp_box)
         if clipped.is_empty:
             continue
-        d = geometry_to_path(clipped, vp_minx, vp_miny, vp_maxx, vp_maxy, svg_w, svg_h)
+        d = geometry_to_path(clipped, proj)
         if d:
             lines.append(f'<path d="{d}" fill="{LAND_FILL}" stroke="{LAND_STROKE}" stroke-width="0.5"/>')
 
@@ -158,14 +184,14 @@ def render_svg(target_geom, neighbour_geoms, all_geoms, all_lakes, vp, svg_w, sv
         clipped = geom.intersection(vp_box)
         if clipped.is_empty:
             continue
-        d = geometry_to_path(clipped, vp_minx, vp_miny, vp_maxx, vp_maxy, svg_w, svg_h)
+        d = geometry_to_path(clipped, proj)
         if d:
             lines.append(f'<path d="{d}" fill="{NEIGHBOUR_FILL}" stroke="{NEIGHBOUR_STROKE}" stroke-width="0.8"/>')
 
     # Draw target clipped to viewport
     clipped_target = target_geom.intersection(vp_box)
     if not clipped_target.is_empty:
-        d = geometry_to_path(clipped_target, vp_minx, vp_miny, vp_maxx, vp_maxy, svg_w, svg_h)
+        d = geometry_to_path(clipped_target, proj)
         if d:
             lines.append(f'<path d="{d}" fill="{TARGET_FILL}" stroke="{TARGET_STROKE}" stroke-width="1.2"/>')
 
@@ -176,7 +202,7 @@ def render_svg(target_geom, neighbour_geoms, all_geoms, all_lakes, vp, svg_w, sv
         clipped = lake_geom.intersection(vp_box)
         if clipped.is_empty:
             continue
-        d = geometry_to_path(clipped, vp_minx, vp_miny, vp_maxx, vp_maxy, svg_w, svg_h)
+        d = geometry_to_path(clipped, proj)
         if d:
             lines.append(f'<path d="{d}" fill="{LAKE_FILL}" stroke="none"/>')
 
