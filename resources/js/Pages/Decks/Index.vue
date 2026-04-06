@@ -226,23 +226,78 @@ const deckColors = [
                             </div>
                         </div>
 
-                        <!-- Stats row -->
-                        <div class="flex items-center gap-3 mt-4 flex-wrap">
-                            <span class="text-sm text-gray-500 dark:text-gray-400">
-                                {{ deck.cards_count }} total
-                            </span>
-                            <span v-if="deck.active_count > 0" class="text-sm text-gray-500 dark:text-gray-400">
-                                {{ deck.active_count }} active
-                            </span>
-                            <span v-if="deck.new_today > 0" class="text-sm text-gray-500 dark:text-gray-400">
-                                {{ deck.new_today }} new today
-                            </span>
-                            <span
-                                v-if="deck.due_count > 0"
-                                class="inline-flex items-center gap-1 text-sm font-medium text-white bg-blue-600 px-2 py-0.5 rounded-full"
-                            >
-                                {{ deck.due_count }} due
-                            </span>
+                        <!-- Progress bar -->
+                        <div v-if="deck.cards_count > 0" class="mt-4">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-xs font-medium text-gray-500 dark:text-gray-400">
+                                    {{ deck.active_count }}/{{ deck.cards_count }} active
+                                    <span class="text-gray-400 dark:text-gray-500">({{ Math.round((deck.active_count / deck.cards_count) * 100) }}%)</span>
+                                </span>
+                                <span
+                                    v-if="deck.due_count > 0"
+                                    class="inline-flex items-center gap-1 text-xs font-medium text-white bg-blue-600 px-1.5 py-0.5 rounded-full"
+                                >
+                                    {{ deck.due_count }} due
+                                </span>
+                            </div>
+                            <div class="w-full h-3 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden flex">
+                                <div
+                                    v-if="deck.mastered_count > 0"
+                                    class="bg-green-500 transition-all duration-300"
+                                    :style="{ width: (deck.mastered_count / deck.cards_count * 100) + '%' }"
+                                    :title="`${deck.mastered_count} mastered`"
+                                ></div>
+                                <div
+                                    v-if="deck.difficult_count > 0"
+                                    class="bg-green-300 dark:bg-green-700 transition-all duration-300"
+                                    :style="{ width: (deck.difficult_count / deck.cards_count * 100) + '%' }"
+                                    :title="`${deck.difficult_count} review (difficult)`"
+                                ></div>
+                                <div
+                                    v-if="deck.learning_count > 0"
+                                    class="bg-orange-400 transition-all duration-300"
+                                    :style="{ width: (deck.learning_count / deck.cards_count * 100) + '%' }"
+                                    :title="`${deck.learning_count} learning`"
+                                ></div>
+                            </div>
+                            <div class="flex items-center gap-3 mt-1.5 text-xs text-gray-400 dark:text-gray-500">
+                                <span v-if="deck.mastered_count > 0" class="flex items-center gap-1">
+                                    <span class="inline-block w-2 h-2 rounded-full bg-green-500"></span> {{ deck.mastered_count }} mastered
+                                </span>
+                                <span v-if="deck.difficult_count > 0" class="flex items-center gap-1">
+                                    <span class="inline-block w-2 h-2 rounded-full bg-green-300 dark:bg-green-700"></span> {{ deck.difficult_count }} review
+                                </span>
+                                <span v-if="deck.learning_count > 0" class="flex items-center gap-1">
+                                    <span class="inline-block w-2 h-2 rounded-full bg-orange-400"></span> {{ deck.learning_count }} learning
+                                </span>
+                                <span v-if="deck.cards_count - deck.active_count > 0" class="flex items-center gap-1">
+                                    <span class="inline-block w-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700"></span> {{ deck.cards_count - deck.active_count }} unseen
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Mastered trend sparkline -->
+                        <div v-if="deck.mastered_trend && Math.max(...deck.mastered_trend) > 0" class="mt-3">
+                            <p class="text-xs text-gray-400 dark:text-gray-500 mb-1">Mastered — 30 days</p>
+                            <svg :viewBox="`0 0 ${deck.mastered_trend.length - 1} 20`" class="w-full h-8" preserveAspectRatio="none">
+                                <polyline
+                                    :points="deck.mastered_trend.map((v, i) => `${i},${20 - (v / Math.max(...deck.mastered_trend)) * 18}`).join(' ')"
+                                    fill="none"
+                                    stroke="#22c55e"
+                                    stroke-width="1.2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    vector-effect="non-scaling-stroke"
+                                />
+                                <polygon
+                                    :points="`0,20 ${deck.mastered_trend.map((v, i) => `${i},${20 - (v / Math.max(...deck.mastered_trend)) * 18}`).join(' ')} ${deck.mastered_trend.length - 1},20`"
+                                    fill="#22c55e"
+                                    fill-opacity="0.1"
+                                />
+                            </svg>
+                        </div>
+
+                        <div v-else-if="deck.cards_count === 0" class="mt-4">
+                            <span class="text-sm text-gray-400 dark:text-gray-500">No cards yet</span>
                         </div>
 
                         <!-- Action buttons -->

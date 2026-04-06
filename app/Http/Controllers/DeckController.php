@@ -64,14 +64,55 @@ class DeckController extends Controller
         $newRemainingToday = min(max(0, $limit - $newSeenToday), $totalNewAvailable);
         $newCardsToday     = $newSeenToday + $newRemainingToday;
 
+        // Cumulative mastered cards per deck over last 30 days
+        // A card counts as "mastered" the first time it reaches review state (state=2)
+        $masteredLogs = ReviewLog::where('user_id', $userId)
+            ->where('state_after', 2)
+            ->where('state_before', '!=', 2)
+            ->where('reviewed_at', '>=', now($sydney)->subDays(29)->startOfDay()->utc())
+            ->select('deck_id', 'card_id', 'reviewed_at')
+            ->get()
+            ->groupBy('deck_id')
+            ->map(function ($logs) use ($sydney) {
+                // Only count each card once (first time it hit review)
+                return $logs->sortBy('reviewed_at')
+                    ->unique('card_id')
+                    ->groupBy(fn($log) => $log->reviewed_at->setTimezone($sydney)->format('Y-m-d'))
+                    ->map->count();
+            });
+
+        // Count mastered cards before the 30-day window per deck
+        $masteredBeforeWindow = ReviewLog::where('user_id', $userId)
+            ->where('state_after', 2)
+            ->where('state_before', '!=', 2)
+            ->where('reviewed_at', '<', now($sydney)->subDays(29)->startOfDay()->utc())
+            ->selectRaw('deck_id, COUNT(DISTINCT card_id) as count')
+            ->groupBy('deck_id')
+            ->pluck('count', 'deck_id');
+
         $decks = $user->decks()
             ->withCount('cards')
             ->withCount(['cards as active_count' => fn($q) => $q->where('fsrs_state', '>', 0)])
+            ->withCount(['cards as learning_count' => fn($q) => $q->whereIn('fsrs_state', [1, 3])])
+            ->withCount(['cards as mastered_count' => fn($q) => $q->where('fsrs_state', 2)->where('fsrs_difficulty', '<=', 5)])
+            ->withCount(['cards as difficult_count' => fn($q) => $q->where('fsrs_state', 2)->where('fsrs_difficulty', '>', 5)])
             ->orderBy('name')
             ->get()
-            ->map(function ($deck) use ($newTodayByDeck) {
+            ->map(function ($deck) use ($newTodayByDeck, $masteredLogs, $masteredBeforeWindow, $sydney) {
                 $deck->due_count      = $this->fsrsService->getDueCount($deck);
                 $deck->new_today      = $newTodayByDeck[$deck->id] ?? 0;
+
+                // Build cumulative mastered trend (30 days)
+                $dailyCounts = $masteredLogs[$deck->id] ?? collect();
+                $cumulative = $masteredBeforeWindow[$deck->id] ?? 0;
+                $trend = [];
+                for ($i = 29; $i >= 0; $i--) {
+                    $date = now($sydney)->subDays($i)->format('Y-m-d');
+                    $cumulative += $dailyCounts[$date] ?? 0;
+                    $trend[] = $cumulative;
+                }
+                $deck->mastered_trend = $trend;
+
                 return $deck;
             });
 
