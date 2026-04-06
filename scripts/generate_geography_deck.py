@@ -37,7 +37,18 @@ from shapely.ops import unary_union
 PROJECT_ROOT = Path(__file__).parent.parent
 MAPS_DIR = PROJECT_ROOT / "public" / "maps"
 CACHE_DIR = PROJECT_ROOT / "scripts" / ".cache"
-DB_PATH = PROJECT_ROOT / "database" / "database.sqlite"
+# Read DB path from .env if present, fall back to default
+def _read_db_path():
+    env_file = PROJECT_ROOT / ".env"
+    if env_file.exists():
+        for line in env_file.read_text().splitlines():
+            if line.startswith("DB_DATABASE="):
+                val = line.split("=", 1)[1].strip()
+                if val:
+                    return Path(val)
+    return PROJECT_ROOT / "database" / "database.sqlite"
+
+DB_PATH = _read_db_path()
 
 GEOJSON_URL = "https://datahub.io/core/geo-countries/r/countries.geojson"
 LAKES_URL = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_lakes.geojson"
