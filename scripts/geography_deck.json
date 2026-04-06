@@ -1,0 +1,1444 @@
+{
+  "deck": {
+    "name": "World Geography",
+    "description": "Identify countries and their capitals from their map shape and surrounding geography.",
+    "is_active": true,
+    "new_cards_per_day": 10
+  },
+  "cards": [
+    {
+      "cca2": "ck",
+      "front_content": "",
+      "back_content": "Cook Islands\nAvarua",
+      "front_image_url": "/maps/ck.svg"
+    },
+    {
+      "cca2": "gn",
+      "front_content": "",
+      "back_content": "Guinea\nConakry",
+      "front_image_url": "/maps/gn.svg"
+    },
+    {
+      "cca2": "tg",
+      "front_content": "",
+      "back_content": "Togo\nLomé",
+      "front_image_url": "/maps/tg.svg"
+    },
+    {
+      "cca2": "tw",
+      "front_content": "",
+      "back_content": "Taiwan\nTaipei",
+      "front_image_url": "/maps/tw.svg"
+    },
+    {
+      "cca2": "kg",
+      "front_content": "",
+      "back_content": "Kyrgyzstan\nBishkek",
+      "front_image_url": "/maps/kg.svg"
+    },
+    {
+      "cca2": "sr",
+      "front_content": "",
+      "back_content": "Suriname\nParamaribo",
+      "front_image_url": "/maps/sr.svg"
+    },
+    {
+      "cca2": "do",
+      "front_content": "",
+      "back_content": "Dominican Republic\nSanto Domingo",
+      "front_image_url": "/maps/do.svg"
+    },
+    {
+      "cca2": "gt",
+      "front_content": "",
+      "back_content": "Guatemala\nGuatemala City",
+      "front_image_url": "/maps/gt.svg"
+    },
+    {
+      "cca2": "dz",
+      "front_content": "",
+      "back_content": "Algeria\nAlgiers",
+      "front_image_url": "/maps/dz.svg"
+    },
+    {
+      "cca2": "ua",
+      "front_content": "",
+      "back_content": "Ukraine\nKyiv",
+      "front_image_url": "/maps/ua.svg"
+    },
+    {
+      "cca2": "kn",
+      "front_content": "",
+      "back_content": "Saint Kitts and Nevis\nBasseterre",
+      "front_image_url": "/maps/kn.svg"
+    },
+    {
+      "cca2": "hr",
+      "front_content": "",
+      "back_content": "Croatia\nZagreb",
+      "front_image_url": "/maps/hr.svg"
+    },
+    {
+      "cca2": "gq",
+      "front_content": "",
+      "back_content": "Equatorial Guinea\nCiudad de la Paz",
+      "front_image_url": "/maps/gq.svg"
+    },
+    {
+      "cca2": "pa",
+      "front_content": "",
+      "back_content": "Panama\nPanama City",
+      "front_image_url": "/maps/pa.svg"
+    },
+    {
+      "cca2": "be",
+      "front_content": "",
+      "back_content": "Belgium\nBrussels",
+      "front_image_url": "/maps/be.svg"
+    },
+    {
+      "cca2": "rw",
+      "front_content": "",
+      "back_content": "Rwanda\nKigali",
+      "front_image_url": "/maps/rw.svg"
+    },
+    {
+      "cca2": "tf",
+      "front_content": "",
+      "back_content": "French Southern and Antarctic Lands\nPort-aux-Français",
+      "front_image_url": "/maps/tf.svg"
+    },
+    {
+      "cca2": "cv",
+      "front_content": "",
+      "back_content": "Cape Verde\nPraia",
+      "front_image_url": "/maps/cv.svg"
+    },
+    {
+      "cca2": "kr",
+      "front_content": "",
+      "back_content": "South Korea\nSeoul",
+      "front_image_url": "/maps/kr.svg"
+    },
+    {
+      "cca2": "gu",
+      "front_content": "",
+      "back_content": "Guam\nHagåtña",
+      "front_image_url": "/maps/gu.svg"
+    },
+    {
+      "cca2": "ad",
+      "front_content": "",
+      "back_content": "Andorra\nAndorra la Vella",
+      "front_image_url": "/maps/ad.svg"
+    },
+    {
+      "cca2": "sn",
+      "front_content": "",
+      "back_content": "Senegal\nDakar",
+      "front_image_url": "/maps/sn.svg"
+    },
+    {
+      "cca2": "uy",
+      "front_content": "",
+      "back_content": "Uruguay\nMontevideo",
+      "front_image_url": "/maps/uy.svg"
+    },
+    {
+      "cca2": "cg",
+      "front_content": "",
+      "back_content": "Republic of the Congo\nBrazzaville",
+      "front_image_url": "/maps/cg.svg"
+    },
+    {
+      "cca2": "na",
+      "front_content": "",
+      "back_content": "Namibia\nWindhoek",
+      "front_image_url": "/maps/na.svg"
+    },
+    {
+      "cca2": "sg",
+      "front_content": "",
+      "back_content": "Singapore\nSingapore",
+      "front_image_url": "/maps/sg.svg"
+    },
+    {
+      "cca2": "fi",
+      "front_content": "",
+      "back_content": "Finland\nHelsinki",
+      "front_image_url": "/maps/fi.svg"
+    },
+    {
+      "cca2": "eg",
+      "front_content": "",
+      "back_content": "Egypt\nCairo",
+      "front_image_url": "/maps/eg.svg"
+    },
+    {
+      "cca2": "pw",
+      "front_content": "",
+      "back_content": "Palau\nNgerulmud",
+      "front_image_url": "/maps/pw.svg"
+    },
+    {
+      "cca2": "as",
+      "front_content": "",
+      "back_content": "American Samoa\nPago Pago",
+      "front_image_url": "/maps/as.svg"
+    },
+    {
+      "cca2": "ag",
+      "front_content": "",
+      "back_content": "Antigua and Barbuda\nSaint John's",
+      "front_image_url": "/maps/ag.svg"
+    },
+    {
+      "cca2": "sc",
+      "front_content": "",
+      "back_content": "Seychelles\nVictoria",
+      "front_image_url": "/maps/sc.svg"
+    },
+    {
+      "cca2": "kw",
+      "front_content": "",
+      "back_content": "Kuwait\nKuwait City",
+      "front_image_url": "/maps/kw.svg"
+    },
+    {
+      "cca2": "gr",
+      "front_content": "",
+      "back_content": "Greece\nAthens",
+      "front_image_url": "/maps/gr.svg"
+    },
+    {
+      "cca2": "ki",
+      "front_content": "",
+      "back_content": "Kiribati\nSouth Tarawa",
+      "front_image_url": "/maps/ki.svg"
+    },
+    {
+      "cca2": "cy",
+      "front_content": "",
+      "back_content": "Cyprus\nNicosia",
+      "front_image_url": "/maps/cy.svg"
+    },
+    {
+      "cca2": "ml",
+      "front_content": "",
+      "back_content": "Mali\nBamako",
+      "front_image_url": "/maps/ml.svg"
+    },
+    {
+      "cca2": "bm",
+      "front_content": "",
+      "back_content": "Bermuda\nHamilton",
+      "front_image_url": "/maps/bm.svg"
+    },
+    {
+      "cca2": "gl",
+      "front_content": "",
+      "back_content": "Greenland\nNuuk",
+      "front_image_url": "/maps/gl.svg"
+    },
+    {
+      "cca2": "er",
+      "front_content": "",
+      "back_content": "Eritrea\nAsmara",
+      "front_image_url": "/maps/er.svg"
+    },
+    {
+      "cca2": "tz",
+      "front_content": "",
+      "back_content": "Tanzania\nDodoma",
+      "front_image_url": "/maps/tz.svg"
+    },
+    {
+      "cca2": "vn",
+      "front_content": "",
+      "back_content": "Vietnam\nHanoi",
+      "front_image_url": "/maps/vn.svg"
+    },
+    {
+      "cca2": "td",
+      "front_content": "",
+      "back_content": "Chad\nN'Djamena",
+      "front_image_url": "/maps/td.svg"
+    },
+    {
+      "cca2": "ci",
+      "front_content": "",
+      "back_content": "Ivory Coast\nYamoussoukro",
+      "front_image_url": "/maps/ci.svg"
+    },
+    {
+      "cca2": "ge",
+      "front_content": "",
+      "back_content": "Georgia\nTbilisi",
+      "front_image_url": "/maps/ge.svg"
+    },
+    {
+      "cca2": "im",
+      "front_content": "",
+      "back_content": "Isle of Man\nDouglas",
+      "front_image_url": "/maps/im.svg"
+    },
+    {
+      "cca2": "gs",
+      "front_content": "",
+      "back_content": "South Georgia\nKing Edward Point",
+      "front_image_url": "/maps/gs.svg"
+    },
+    {
+      "cca2": "bo",
+      "front_content": "",
+      "back_content": "Bolivia\nSucre",
+      "front_image_url": "/maps/bo.svg"
+    },
+    {
+      "cca2": "um",
+      "front_content": "",
+      "back_content": "United States Minor Outlying Islands\nWashington DC",
+      "front_image_url": "/maps/um.svg"
+    },
+    {
+      "cca2": "dk",
+      "front_content": "",
+      "back_content": "Denmark\nCopenhagen",
+      "front_image_url": "/maps/dk.svg"
+    },
+    {
+      "cca2": "tm",
+      "front_content": "",
+      "back_content": "Turkmenistan\nAshgabat",
+      "front_image_url": "/maps/tm.svg"
+    },
+    {
+      "cca2": "ne",
+      "front_content": "",
+      "back_content": "Niger\nNiamey",
+      "front_image_url": "/maps/ne.svg"
+    },
+    {
+      "cca2": "fm",
+      "front_content": "",
+      "back_content": "Micronesia\nPalikir",
+      "front_image_url": "/maps/fm.svg"
+    },
+    {
+      "cca2": "je",
+      "front_content": "",
+      "back_content": "Jersey\nSaint Helier",
+      "front_image_url": "/maps/je.svg"
+    },
+    {
+      "cca2": "ky",
+      "front_content": "",
+      "back_content": "Cayman Islands\nGeorge Town",
+      "front_image_url": "/maps/ky.svg"
+    },
+    {
+      "cca2": "li",
+      "front_content": "",
+      "back_content": "Liechtenstein\nVaduz",
+      "front_image_url": "/maps/li.svg"
+    },
+    {
+      "cca2": "ba",
+      "front_content": "",
+      "back_content": "Bosnia and Herzegovina\nSarajevo",
+      "front_image_url": "/maps/ba.svg"
+    },
+    {
+      "cca2": "fr",
+      "front_content": "",
+      "back_content": "France\nParis",
+      "front_image_url": "/maps/fr.svg"
+    },
+    {
+      "cca2": "pf",
+      "front_content": "",
+      "back_content": "French Polynesia\nPapeetē",
+      "front_image_url": "/maps/pf.svg"
+    },
+    {
+      "cca2": "kz",
+      "front_content": "",
+      "back_content": "Kazakhstan\nAstana",
+      "front_image_url": "/maps/kz.svg"
+    },
+    {
+      "cca2": "ao",
+      "front_content": "",
+      "back_content": "Angola\nLuanda",
+      "front_image_url": "/maps/ao.svg"
+    },
+    {
+      "cca2": "nz",
+      "front_content": "",
+      "back_content": "New Zealand\nWellington",
+      "front_image_url": "/maps/nz.svg"
+    },
+    {
+      "cca2": "pr",
+      "front_content": "",
+      "back_content": "Puerto Rico\nSan Juan",
+      "front_image_url": "/maps/pr.svg"
+    },
+    {
+      "cca2": "sa",
+      "front_content": "",
+      "back_content": "Saudi Arabia\nRiyadh",
+      "front_image_url": "/maps/sa.svg"
+    },
+    {
+      "cca2": "me",
+      "front_content": "",
+      "back_content": "Montenegro\nPodgorica",
+      "front_image_url": "/maps/me.svg"
+    },
+    {
+      "cca2": "za",
+      "front_content": "",
+      "back_content": "South Africa\nPretoria",
+      "front_image_url": "/maps/za.svg"
+    },
+    {
+      "cca2": "pk",
+      "front_content": "",
+      "back_content": "Pakistan\nIslamabad",
+      "front_image_url": "/maps/pk.svg"
+    },
+    {
+      "cca2": "lk",
+      "front_content": "",
+      "back_content": "Sri Lanka\nSri Jayawardenepura Kotte",
+      "front_image_url": "/maps/lk.svg"
+    },
+    {
+      "cca2": "cm",
+      "front_content": "",
+      "back_content": "Cameroon\nYaoundé",
+      "front_image_url": "/maps/cm.svg"
+    },
+    {
+      "cca2": "gg",
+      "front_content": "",
+      "back_content": "Guernsey\nSt. Peter Port",
+      "front_image_url": "/maps/gg.svg"
+    },
+    {
+      "cca2": "lr",
+      "front_content": "",
+      "back_content": "Liberia\nMonrovia",
+      "front_image_url": "/maps/lr.svg"
+    },
+    {
+      "cca2": "ae",
+      "front_content": "",
+      "back_content": "United Arab Emirates\nAbu Dhabi",
+      "front_image_url": "/maps/ae.svg"
+    },
+    {
+      "cca2": "ch",
+      "front_content": "",
+      "back_content": "Switzerland\nBern",
+      "front_image_url": "/maps/ch.svg"
+    },
+    {
+      "cca2": "hu",
+      "front_content": "",
+      "back_content": "Hungary\nBudapest",
+      "front_image_url": "/maps/hu.svg"
+    },
+    {
+      "cca2": "ly",
+      "front_content": "",
+      "back_content": "Libya\nTripoli",
+      "front_image_url": "/maps/ly.svg"
+    },
+    {
+      "cca2": "vu",
+      "front_content": "",
+      "back_content": "Vanuatu\nPort Vila",
+      "front_image_url": "/maps/vu.svg"
+    },
+    {
+      "cca2": "wf",
+      "front_content": "",
+      "back_content": "Wallis and Futuna\nMata-Utu",
+      "front_image_url": "/maps/wf.svg"
+    },
+    {
+      "cca2": "lc",
+      "front_content": "",
+      "back_content": "Saint Lucia\nCastries",
+      "front_image_url": "/maps/lc.svg"
+    },
+    {
+      "cca2": "cf",
+      "front_content": "",
+      "back_content": "Central African Republic\nBangui",
+      "front_image_url": "/maps/cf.svg"
+    },
+    {
+      "cca2": "tj",
+      "front_content": "",
+      "back_content": "Tajikistan\nDushanbe",
+      "front_image_url": "/maps/tj.svg"
+    },
+    {
+      "cca2": "ie",
+      "front_content": "",
+      "back_content": "Ireland\nDublin",
+      "front_image_url": "/maps/ie.svg"
+    },
+    {
+      "cca2": "nc",
+      "front_content": "",
+      "back_content": "New Caledonia\nNouméa",
+      "front_image_url": "/maps/nc.svg"
+    },
+    {
+      "cca2": "ye",
+      "front_content": "",
+      "back_content": "Yemen\nSana'a",
+      "front_image_url": "/maps/ye.svg"
+    },
+    {
+      "cca2": "fo",
+      "front_content": "",
+      "back_content": "Faroe Islands\nTórshavn",
+      "front_image_url": "/maps/fo.svg"
+    },
+    {
+      "cca2": "cu",
+      "front_content": "",
+      "back_content": "Cuba\nHavana",
+      "front_image_url": "/maps/cu.svg"
+    },
+    {
+      "cca2": "az",
+      "front_content": "",
+      "back_content": "Azerbaijan\nBaku",
+      "front_image_url": "/maps/az.svg"
+    },
+    {
+      "cca2": "sb",
+      "front_content": "",
+      "back_content": "Solomon Islands\nHoniara",
+      "front_image_url": "/maps/sb.svg"
+    },
+    {
+      "cca2": "jm",
+      "front_content": "",
+      "back_content": "Jamaica\nKingston",
+      "front_image_url": "/maps/jm.svg"
+    },
+    {
+      "cca2": "ma",
+      "front_content": "",
+      "back_content": "Morocco\nRabat",
+      "front_image_url": "/maps/ma.svg"
+    },
+    {
+      "cca2": "tt",
+      "front_content": "",
+      "back_content": "Trinidad and Tobago\nPort of Spain",
+      "front_image_url": "/maps/tt.svg"
+    },
+    {
+      "cca2": "nu",
+      "front_content": "",
+      "back_content": "Niue\nAlofi",
+      "front_image_url": "/maps/nu.svg"
+    },
+    {
+      "cca2": "bz",
+      "front_content": "",
+      "back_content": "Belize\nBelmopan",
+      "front_image_url": "/maps/bz.svg"
+    },
+    {
+      "cca2": "cn",
+      "front_content": "",
+      "back_content": "China\nBeijing",
+      "front_image_url": "/maps/cn.svg"
+    },
+    {
+      "cca2": "ws",
+      "front_content": "",
+      "back_content": "Samoa\nApia",
+      "front_image_url": "/maps/ws.svg"
+    },
+    {
+      "cca2": "vg",
+      "front_content": "",
+      "back_content": "British Virgin Islands\nRoad Town",
+      "front_image_url": "/maps/vg.svg"
+    },
+    {
+      "cca2": "sd",
+      "front_content": "",
+      "back_content": "Sudan\nKhartoum",
+      "front_image_url": "/maps/sd.svg"
+    },
+    {
+      "cca2": "nf",
+      "front_content": "",
+      "back_content": "Norfolk Island\nKingston",
+      "front_image_url": "/maps/nf.svg"
+    },
+    {
+      "cca2": "sk",
+      "front_content": "",
+      "back_content": "Slovakia\nBratislava",
+      "front_image_url": "/maps/sk.svg"
+    },
+    {
+      "cca2": "bi",
+      "front_content": "",
+      "back_content": "Burundi\nGitega",
+      "front_image_url": "/maps/bi.svg"
+    },
+    {
+      "cca2": "mh",
+      "front_content": "",
+      "back_content": "Marshall Islands\nMajuro",
+      "front_image_url": "/maps/mh.svg"
+    },
+    {
+      "cca2": "at",
+      "front_content": "",
+      "back_content": "Austria\nVienna",
+      "front_image_url": "/maps/at.svg"
+    },
+    {
+      "cca2": "mz",
+      "front_content": "",
+      "back_content": "Mozambique\nMaputo",
+      "front_image_url": "/maps/mz.svg"
+    },
+    {
+      "cca2": "vc",
+      "front_content": "",
+      "back_content": "Saint Vincent and the Grenadines\nKingstown",
+      "front_image_url": "/maps/vc.svg"
+    },
+    {
+      "cca2": "pg",
+      "front_content": "",
+      "back_content": "Papua New Guinea\nPort Moresby",
+      "front_image_url": "/maps/pg.svg"
+    },
+    {
+      "cca2": "tr",
+      "front_content": "",
+      "back_content": "Turkey\nAnkara",
+      "front_image_url": "/maps/tr.svg"
+    },
+    {
+      "cca2": "xk",
+      "front_content": "",
+      "back_content": "Kosovo\nPristina",
+      "front_image_url": "/maps/xk.svg"
+    },
+    {
+      "cca2": "gd",
+      "front_content": "",
+      "back_content": "Grenada\nSt. George's",
+      "front_image_url": "/maps/gd.svg"
+    },
+    {
+      "cca2": "kh",
+      "front_content": "",
+      "back_content": "Cambodia\nPhnom Penh",
+      "front_image_url": "/maps/kh.svg"
+    },
+    {
+      "cca2": "pt",
+      "front_content": "",
+      "back_content": "Portugal\nLisbon",
+      "front_image_url": "/maps/pt.svg"
+    },
+    {
+      "cca2": "gb",
+      "front_content": "",
+      "back_content": "United Kingdom\nLondon",
+      "front_image_url": "/maps/gb.svg"
+    },
+    {
+      "cca2": "ng",
+      "front_content": "",
+      "back_content": "Nigeria\nAbuja",
+      "front_image_url": "/maps/ng.svg"
+    },
+    {
+      "cca2": "ai",
+      "front_content": "",
+      "back_content": "Anguilla\nThe Valley",
+      "front_image_url": "/maps/ai.svg"
+    },
+    {
+      "cca2": "mp",
+      "front_content": "",
+      "back_content": "Northern Mariana Islands\nSaipan",
+      "front_image_url": "/maps/mp.svg"
+    },
+    {
+      "cca2": "il",
+      "front_content": "",
+      "back_content": "Israel\nJerusalem",
+      "front_image_url": "/maps/il.svg"
+    },
+    {
+      "cca2": "lb",
+      "front_content": "",
+      "back_content": "Lebanon\nBeirut",
+      "front_image_url": "/maps/lb.svg"
+    },
+    {
+      "cca2": "jp",
+      "front_content": "",
+      "back_content": "Japan\nTokyo",
+      "front_image_url": "/maps/jp.svg"
+    },
+    {
+      "cca2": "gm",
+      "front_content": "",
+      "back_content": "Gambia\nBanjul",
+      "front_image_url": "/maps/gm.svg"
+    },
+    {
+      "cca2": "mf",
+      "front_content": "",
+      "back_content": "Saint Martin\nMarigot",
+      "front_image_url": "/maps/mf.svg"
+    },
+    {
+      "cca2": "gw",
+      "front_content": "",
+      "back_content": "Guinea-Bissau\nBissau",
+      "front_image_url": "/maps/gw.svg"
+    },
+    {
+      "cca2": "la",
+      "front_content": "",
+      "back_content": "Laos\nVientiane",
+      "front_image_url": "/maps/la.svg"
+    },
+    {
+      "cca2": "mk",
+      "front_content": "",
+      "back_content": "North Macedonia\nSkopje",
+      "front_image_url": "/maps/mk.svg"
+    },
+    {
+      "cca2": "qa",
+      "front_content": "",
+      "back_content": "Qatar\nDoha",
+      "front_image_url": "/maps/qa.svg"
+    },
+    {
+      "cca2": "zm",
+      "front_content": "",
+      "back_content": "Zambia\nLusaka",
+      "front_image_url": "/maps/zm.svg"
+    },
+    {
+      "cca2": "bb",
+      "front_content": "",
+      "back_content": "Barbados\nBridgetown",
+      "front_image_url": "/maps/bb.svg"
+    },
+    {
+      "cca2": "va",
+      "front_content": "",
+      "back_content": "Vatican City\nVatican City",
+      "front_image_url": "/maps/va.svg"
+    },
+    {
+      "cca2": "it",
+      "front_content": "",
+      "back_content": "Italy\nRome",
+      "front_image_url": "/maps/it.svg"
+    },
+    {
+      "cca2": "km",
+      "front_content": "",
+      "back_content": "Comoros\nMoroni",
+      "front_image_url": "/maps/km.svg"
+    },
+    {
+      "cca2": "al",
+      "front_content": "",
+      "back_content": "Albania\nTirana",
+      "front_image_url": "/maps/al.svg"
+    },
+    {
+      "cca2": "gi",
+      "front_content": "",
+      "back_content": "Gibraltar\nGibraltar",
+      "front_image_url": "/maps/gi.svg"
+    },
+    {
+      "cca2": "mn",
+      "front_content": "",
+      "back_content": "Mongolia\nUlan Bator",
+      "front_image_url": "/maps/mn.svg"
+    },
+    {
+      "cca2": "to",
+      "front_content": "",
+      "back_content": "Tonga\nNuku'alofa",
+      "front_image_url": "/maps/to.svg"
+    },
+    {
+      "cca2": "mg",
+      "front_content": "",
+      "back_content": "Madagascar\nAntananarivo",
+      "front_image_url": "/maps/mg.svg"
+    },
+    {
+      "cca2": "pm",
+      "front_content": "",
+      "back_content": "Saint Pierre and Miquelon\nSaint-Pierre",
+      "front_image_url": "/maps/pm.svg"
+    },
+    {
+      "cca2": "sh",
+      "front_content": "",
+      "back_content": "Saint Helena, Ascension and Tristan da Cunha\nJamestown",
+      "front_image_url": "/maps/sh.svg"
+    },
+    {
+      "cca2": "mc",
+      "front_content": "",
+      "back_content": "Monaco\nMonaco",
+      "front_image_url": "/maps/mc.svg"
+    },
+    {
+      "cca2": "br",
+      "front_content": "",
+      "back_content": "Brazil\nBrasília",
+      "front_image_url": "/maps/br.svg"
+    },
+    {
+      "cca2": "au",
+      "front_content": "",
+      "back_content": "Australia\nCanberra",
+      "front_image_url": "/maps/au.svg"
+    },
+    {
+      "cca2": "gy",
+      "front_content": "",
+      "back_content": "Guyana\nGeorgetown",
+      "front_image_url": "/maps/gy.svg"
+    },
+    {
+      "cca2": "si",
+      "front_content": "",
+      "back_content": "Slovenia\nLjubljana",
+      "front_image_url": "/maps/si.svg"
+    },
+    {
+      "cca2": "sm",
+      "front_content": "",
+      "back_content": "San Marino\nCity of San Marino",
+      "front_image_url": "/maps/sm.svg"
+    },
+    {
+      "cca2": "ps",
+      "front_content": "",
+      "back_content": "Palestine\nRamallah",
+      "front_image_url": "/maps/ps.svg"
+    },
+    {
+      "cca2": "bt",
+      "front_content": "",
+      "back_content": "Bhutan\nThimphu",
+      "front_image_url": "/maps/bt.svg"
+    },
+    {
+      "cca2": "sx",
+      "front_content": "",
+      "back_content": "Sint Maarten\nPhilipsburg",
+      "front_image_url": "/maps/sx.svg"
+    },
+    {
+      "cca2": "ph",
+      "front_content": "",
+      "back_content": "Philippines\nManila",
+      "front_image_url": "/maps/ph.svg"
+    },
+    {
+      "cca2": "cl",
+      "front_content": "",
+      "back_content": "Chile\nSantiago",
+      "front_image_url": "/maps/cl.svg"
+    },
+    {
+      "cca2": "ht",
+      "front_content": "",
+      "back_content": "Haiti\nPort-au-Prince",
+      "front_image_url": "/maps/ht.svg"
+    },
+    {
+      "cca2": "hm",
+      "front_content": "",
+      "back_content": "Heard Island and McDonald Islands",
+      "front_image_url": "/maps/hm.svg"
+    },
+    {
+      "cca2": "aq",
+      "front_content": "",
+      "back_content": "Antarctica",
+      "front_image_url": "/maps/aq.svg"
+    },
+    {
+      "cca2": "st",
+      "front_content": "",
+      "back_content": "São Tomé and Príncipe\nSão Tomé",
+      "front_image_url": "/maps/st.svg"
+    },
+    {
+      "cca2": "mo",
+      "front_content": "",
+      "back_content": "Macau",
+      "front_image_url": "/maps/mo.svg"
+    },
+    {
+      "cca2": "mu",
+      "front_content": "",
+      "back_content": "Mauritius\nPort Louis",
+      "front_image_url": "/maps/mu.svg"
+    },
+    {
+      "cca2": "bh",
+      "front_content": "",
+      "back_content": "Bahrain\nManama",
+      "front_image_url": "/maps/bh.svg"
+    },
+    {
+      "cca2": "mx",
+      "front_content": "",
+      "back_content": "Mexico\nMexico City",
+      "front_image_url": "/maps/mx.svg"
+    },
+    {
+      "cca2": "pn",
+      "front_content": "",
+      "back_content": "Pitcairn Islands\nAdamstown",
+      "front_image_url": "/maps/pn.svg"
+    },
+    {
+      "cca2": "ar",
+      "front_content": "",
+      "back_content": "Argentina\nBuenos Aires",
+      "front_image_url": "/maps/ar.svg"
+    },
+    {
+      "cca2": "np",
+      "front_content": "",
+      "back_content": "Nepal\nKathmandu",
+      "front_image_url": "/maps/np.svg"
+    },
+    {
+      "cca2": "se",
+      "front_content": "",
+      "back_content": "Sweden\nStockholm",
+      "front_image_url": "/maps/se.svg"
+    },
+    {
+      "cca2": "sl",
+      "front_content": "",
+      "back_content": "Sierra Leone\nFreetown",
+      "front_image_url": "/maps/sl.svg"
+    },
+    {
+      "cca2": "sz",
+      "front_content": "",
+      "back_content": "Eswatini\nMbabane",
+      "front_image_url": "/maps/sz.svg"
+    },
+    {
+      "cca2": "es",
+      "front_content": "",
+      "back_content": "Spain\nMadrid",
+      "front_image_url": "/maps/es.svg"
+    },
+    {
+      "cca2": "co",
+      "front_content": "",
+      "back_content": "Colombia\nBogotá",
+      "front_image_url": "/maps/co.svg"
+    },
+    {
+      "cca2": "tc",
+      "front_content": "",
+      "back_content": "Turks and Caicos Islands\nCockburn Town",
+      "front_image_url": "/maps/tc.svg"
+    },
+    {
+      "cca2": "dj",
+      "front_content": "",
+      "back_content": "Djibouti\nDjibouti",
+      "front_image_url": "/maps/dj.svg"
+    },
+    {
+      "cca2": "nr",
+      "front_content": "",
+      "back_content": "Nauru\nYaren",
+      "front_image_url": "/maps/nr.svg"
+    },
+    {
+      "cca2": "sv",
+      "front_content": "",
+      "back_content": "El Salvador\nSan Salvador",
+      "front_image_url": "/maps/sv.svg"
+    },
+    {
+      "cca2": "ax",
+      "front_content": "",
+      "back_content": "Åland Islands\nMariehamn",
+      "front_image_url": "/maps/ax.svg"
+    },
+    {
+      "cca2": "hn",
+      "front_content": "",
+      "back_content": "Honduras\nTegucigalpa",
+      "front_image_url": "/maps/hn.svg"
+    },
+    {
+      "cca2": "ke",
+      "front_content": "",
+      "back_content": "Kenya\nNairobi",
+      "front_image_url": "/maps/ke.svg"
+    },
+    {
+      "cca2": "mt",
+      "front_content": "",
+      "back_content": "Malta\nValletta",
+      "front_image_url": "/maps/mt.svg"
+    },
+    {
+      "cca2": "lv",
+      "front_content": "",
+      "back_content": "Latvia\nRiga",
+      "front_image_url": "/maps/lv.svg"
+    },
+    {
+      "cca2": "ga",
+      "front_content": "",
+      "back_content": "Gabon\nLibreville",
+      "front_image_url": "/maps/ga.svg"
+    },
+    {
+      "cca2": "hk",
+      "front_content": "",
+      "back_content": "Hong Kong\nCity of Victoria",
+      "front_image_url": "/maps/hk.svg"
+    },
+    {
+      "cca2": "tv",
+      "front_content": "",
+      "back_content": "Tuvalu\nFunafuti",
+      "front_image_url": "/maps/tv.svg"
+    },
+    {
+      "cca2": "tl",
+      "front_content": "",
+      "back_content": "Timor-Leste\nDili",
+      "front_image_url": "/maps/tl.svg"
+    },
+    {
+      "cca2": "eh",
+      "front_content": "",
+      "back_content": "Western Sahara\nEl Aaiún",
+      "front_image_url": "/maps/eh.svg"
+    },
+    {
+      "cca2": "ls",
+      "front_content": "",
+      "back_content": "Lesotho\nMaseru",
+      "front_image_url": "/maps/ls.svg"
+    },
+    {
+      "cca2": "us",
+      "front_content": "",
+      "back_content": "United States\nWashington, D.C.",
+      "front_image_url": "/maps/us.svg"
+    },
+    {
+      "cca2": "th",
+      "front_content": "",
+      "back_content": "Thailand\nBangkok",
+      "front_image_url": "/maps/th.svg"
+    },
+    {
+      "cca2": "io",
+      "front_content": "",
+      "back_content": "British Indian Ocean Territory\nDiego Garcia",
+      "front_image_url": "/maps/io.svg"
+    },
+    {
+      "cca2": "in",
+      "front_content": "",
+      "back_content": "India\nNew Delhi",
+      "front_image_url": "/maps/in.svg"
+    },
+    {
+      "cca2": "lt",
+      "front_content": "",
+      "back_content": "Lithuania\nVilnius",
+      "front_image_url": "/maps/lt.svg"
+    },
+    {
+      "cca2": "ms",
+      "front_content": "",
+      "back_content": "Montserrat\nPlymouth",
+      "front_image_url": "/maps/ms.svg"
+    },
+    {
+      "cca2": "zw",
+      "front_content": "",
+      "back_content": "Zimbabwe\nHarare",
+      "front_image_url": "/maps/zw.svg"
+    },
+    {
+      "cca2": "fk",
+      "front_content": "",
+      "back_content": "Falkland Islands\nStanley",
+      "front_image_url": "/maps/fk.svg"
+    },
+    {
+      "cca2": "mv",
+      "front_content": "",
+      "back_content": "Maldives\nMalé",
+      "front_image_url": "/maps/mv.svg"
+    },
+    {
+      "cca2": "tn",
+      "front_content": "",
+      "back_content": "Tunisia\nTunis",
+      "front_image_url": "/maps/tn.svg"
+    },
+    {
+      "cca2": "ee",
+      "front_content": "",
+      "back_content": "Estonia\nTallinn",
+      "front_image_url": "/maps/ee.svg"
+    },
+    {
+      "cca2": "bd",
+      "front_content": "",
+      "back_content": "Bangladesh\nDhaka",
+      "front_image_url": "/maps/bd.svg"
+    },
+    {
+      "cca2": "uz",
+      "front_content": "",
+      "back_content": "Uzbekistan\nTashkent",
+      "front_image_url": "/maps/uz.svg"
+    },
+    {
+      "cca2": "gh",
+      "front_content": "",
+      "back_content": "Ghana\nAccra",
+      "front_image_url": "/maps/gh.svg"
+    },
+    {
+      "cca2": "no",
+      "front_content": "",
+      "back_content": "Norway\nOslo",
+      "front_image_url": "/maps/no.svg"
+    },
+    {
+      "cca2": "so",
+      "front_content": "",
+      "back_content": "Somalia\nMogadishu",
+      "front_image_url": "/maps/so.svg"
+    },
+    {
+      "cca2": "bs",
+      "front_content": "",
+      "back_content": "Bahamas\nNassau",
+      "front_image_url": "/maps/bs.svg"
+    },
+    {
+      "cca2": "om",
+      "front_content": "",
+      "back_content": "Oman\nMuscat",
+      "front_image_url": "/maps/om.svg"
+    },
+    {
+      "cca2": "lu",
+      "front_content": "",
+      "back_content": "Luxembourg\nLuxembourg",
+      "front_image_url": "/maps/lu.svg"
+    },
+    {
+      "cca2": "iq",
+      "front_content": "",
+      "back_content": "Iraq\nBaghdad",
+      "front_image_url": "/maps/iq.svg"
+    },
+    {
+      "cca2": "vi",
+      "front_content": "",
+      "back_content": "United States Virgin Islands\nCharlotte Amalie",
+      "front_image_url": "/maps/vi.svg"
+    },
+    {
+      "cca2": "mr",
+      "front_content": "",
+      "back_content": "Mauritania\nNouakchott",
+      "front_image_url": "/maps/mr.svg"
+    },
+    {
+      "cca2": "ca",
+      "front_content": "",
+      "back_content": "Canada\nOttawa",
+      "front_image_url": "/maps/ca.svg"
+    },
+    {
+      "cca2": "mm",
+      "front_content": "",
+      "back_content": "Myanmar\nNaypyidaw",
+      "front_image_url": "/maps/mm.svg"
+    },
+    {
+      "cca2": "my",
+      "front_content": "",
+      "back_content": "Malaysia\nKuala Lumpur",
+      "front_image_url": "/maps/my.svg"
+    },
+    {
+      "cca2": "ug",
+      "front_content": "",
+      "back_content": "Uganda\nKampala",
+      "front_image_url": "/maps/ug.svg"
+    },
+    {
+      "cca2": "ir",
+      "front_content": "",
+      "back_content": "Iran\nTehran",
+      "front_image_url": "/maps/ir.svg"
+    },
+    {
+      "cca2": "cw",
+      "front_content": "",
+      "back_content": "Curaçao\nWillemstad",
+      "front_image_url": "/maps/cw.svg"
+    },
+    {
+      "cca2": "ro",
+      "front_content": "",
+      "back_content": "Romania\nBucharest",
+      "front_image_url": "/maps/ro.svg"
+    },
+    {
+      "cca2": "sy",
+      "front_content": "",
+      "back_content": "Syria\nDamascus",
+      "front_image_url": "/maps/sy.svg"
+    },
+    {
+      "cca2": "fj",
+      "front_content": "",
+      "back_content": "Fiji\nSuva",
+      "front_image_url": "/maps/fj.svg"
+    },
+    {
+      "cca2": "aw",
+      "front_content": "",
+      "back_content": "Aruba\nOranjestad",
+      "front_image_url": "/maps/aw.svg"
+    },
+    {
+      "cca2": "nl",
+      "front_content": "",
+      "back_content": "Netherlands\nAmsterdam",
+      "front_image_url": "/maps/nl.svg"
+    },
+    {
+      "cca2": "pe",
+      "front_content": "",
+      "back_content": "Peru\nLima",
+      "front_image_url": "/maps/pe.svg"
+    },
+    {
+      "cca2": "bw",
+      "front_content": "",
+      "back_content": "Botswana\nGaborone",
+      "front_image_url": "/maps/bw.svg"
+    },
+    {
+      "cca2": "af",
+      "front_content": "",
+      "back_content": "Afghanistan\nKabul",
+      "front_image_url": "/maps/af.svg"
+    },
+    {
+      "cca2": "rs",
+      "front_content": "",
+      "back_content": "Serbia\nBelgrade",
+      "front_image_url": "/maps/rs.svg"
+    },
+    {
+      "cca2": "cz",
+      "front_content": "",
+      "back_content": "Czechia\nPrague",
+      "front_image_url": "/maps/cz.svg"
+    },
+    {
+      "cca2": "dm",
+      "front_content": "",
+      "back_content": "Dominica\nRoseau",
+      "front_image_url": "/maps/dm.svg"
+    },
+    {
+      "cca2": "pl",
+      "front_content": "",
+      "back_content": "Poland\nWarsaw",
+      "front_image_url": "/maps/pl.svg"
+    },
+    {
+      "cca2": "bj",
+      "front_content": "",
+      "back_content": "Benin\nPorto-Novo",
+      "front_image_url": "/maps/bj.svg"
+    },
+    {
+      "cca2": "md",
+      "front_content": "",
+      "back_content": "Moldova\nChișinău",
+      "front_image_url": "/maps/md.svg"
+    },
+    {
+      "cca2": "ru",
+      "front_content": "",
+      "back_content": "Russia\nMoscow",
+      "front_image_url": "/maps/ru.svg"
+    },
+    {
+      "cca2": "bl",
+      "front_content": "",
+      "back_content": "Saint Barthélemy\nGustavia",
+      "front_image_url": "/maps/bl.svg"
+    },
+    {
+      "cca2": "id",
+      "front_content": "",
+      "back_content": "Indonesia\nJakarta",
+      "front_image_url": "/maps/id.svg"
+    },
+    {
+      "cca2": "ni",
+      "front_content": "",
+      "back_content": "Nicaragua\nManagua",
+      "front_image_url": "/maps/ni.svg"
+    },
+    {
+      "cca2": "am",
+      "front_content": "",
+      "back_content": "Armenia\nYerevan",
+      "front_image_url": "/maps/am.svg"
+    },
+    {
+      "cca2": "by",
+      "front_content": "",
+      "back_content": "Belarus\nMinsk",
+      "front_image_url": "/maps/by.svg"
+    },
+    {
+      "cca2": "et",
+      "front_content": "",
+      "back_content": "Ethiopia\nAddis Ababa",
+      "front_image_url": "/maps/et.svg"
+    },
+    {
+      "cca2": "cr",
+      "front_content": "",
+      "back_content": "Costa Rica\nSan José",
+      "front_image_url": "/maps/cr.svg"
+    },
+    {
+      "cca2": "jo",
+      "front_content": "",
+      "back_content": "Jordan\nAmman",
+      "front_image_url": "/maps/jo.svg"
+    },
+    {
+      "cca2": "de",
+      "front_content": "",
+      "back_content": "Germany\nBerlin",
+      "front_image_url": "/maps/de.svg"
+    },
+    {
+      "cca2": "ec",
+      "front_content": "",
+      "back_content": "Ecuador\nQuito",
+      "front_image_url": "/maps/ec.svg"
+    },
+    {
+      "cca2": "kp",
+      "front_content": "",
+      "back_content": "North Korea\nPyongyang",
+      "front_image_url": "/maps/kp.svg"
+    },
+    {
+      "cca2": "is",
+      "front_content": "",
+      "back_content": "Iceland\nReykjavik",
+      "front_image_url": "/maps/is.svg"
+    },
+    {
+      "cca2": "ss",
+      "front_content": "",
+      "back_content": "South Sudan\nJuba",
+      "front_image_url": "/maps/ss.svg"
+    },
+    {
+      "cca2": "mw",
+      "front_content": "",
+      "back_content": "Malawi\nLilongwe",
+      "front_image_url": "/maps/mw.svg"
+    },
+    {
+      "cca2": "bf",
+      "front_content": "",
+      "back_content": "Burkina Faso\nOuagadougou",
+      "front_image_url": "/maps/bf.svg"
+    },
+    {
+      "cca2": "cd",
+      "front_content": "",
+      "back_content": "DR Congo\nKinshasa",
+      "front_image_url": "/maps/cd.svg"
+    },
+    {
+      "cca2": "ve",
+      "front_content": "",
+      "back_content": "Venezuela\nCaracas",
+      "front_image_url": "/maps/ve.svg"
+    },
+    {
+      "cca2": "bn",
+      "front_content": "",
+      "back_content": "Brunei\nBandar Seri Begawan",
+      "front_image_url": "/maps/bn.svg"
+    },
+    {
+      "cca2": "py",
+      "front_content": "",
+      "back_content": "Paraguay\nAsunción",
+      "front_image_url": "/maps/py.svg"
+    },
+    {
+      "cca2": "bg",
+      "front_content": "",
+      "back_content": "Bulgaria\nSofia",
+      "front_image_url": "/maps/bg.svg"
+    }
+  ]
+}

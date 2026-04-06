@@ -22,9 +22,6 @@ Run with:
 import json
 import math
 import os
-import sqlite3
-import sys
-from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
@@ -37,22 +34,6 @@ from shapely.ops import unary_union
 PROJECT_ROOT = Path(__file__).parent.parent
 MAPS_DIR = PROJECT_ROOT / "public" / "maps"
 CACHE_DIR = PROJECT_ROOT / "scripts" / ".cache"
-# Read DB path from environment or .env file
-def _read_db_path():
-    # Shell env var takes priority (allows overriding without editing .env)
-    if os.environ.get("DB_DATABASE"):
-        return Path(os.environ["DB_DATABASE"])
-    env_file = PROJECT_ROOT / ".env"
-    if env_file.exists():
-        for line in env_file.read_text().splitlines():
-            line = line.strip()
-            if line.startswith("DB_DATABASE="):
-                val = line.split("=", 1)[1].strip().strip('"').strip("'")
-                if val:
-                    return Path(val)
-    return PROJECT_ROOT / "database" / "database.sqlite"
-
-DB_PATH = _read_db_path()
 
 GEOJSON_URL = "https://datahub.io/core/geo-countries/r/countries.geojson"
 LAKES_URL = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_lakes.geojson"
@@ -322,56 +303,22 @@ def main():
             print(f"  - {s}")
 
     # ---------------------------------------------------------------------------
-    # Insert into SQLite
+    # Write deck data to JSON
     # ---------------------------------------------------------------------------
-    print(f"\nInserting into SQLite: {DB_PATH}")
-    con = sqlite3.connect(DB_PATH)
-    cur = con.cursor()
-
-    # Get first user
-    cur.execute("SELECT id FROM users ORDER BY id LIMIT 1")
-    row = cur.fetchone()
-    if not row:
-        print("ERROR: No users found in DB. Run migrations + seed a user first.")
-        sys.exit(1)
-    user_id = row[0]
-    print(f"  Using user_id={user_id}")
-
-    # Check if deck already exists
-    cur.execute("SELECT id FROM decks WHERE name = 'World Geography' AND user_id = ?", (user_id,))
-    existing = cur.fetchone()
-    if existing:
-        print(f"  Deck already exists (id={existing[0]}), deleting old cards...")
-        cur.execute("DELETE FROM cards WHERE deck_id = ?", (existing[0],))
-        deck_id = existing[0]
-    else:
-        now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
-        cur.execute(
-            "INSERT INTO decks (user_id, name, description, is_active, new_cards_per_day, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (user_id, "World Geography", "Identify countries and their capitals from their map shape and surrounding geography.", 1, 10, now, now),
-        )
-        deck_id = cur.lastrowid
-        print(f"  Created deck id={deck_id}")
-
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
-    for card in cards:
-        cur.execute(
-            """INSERT INTO cards
-               (deck_id, user_id, front_content, back_content, front_image_url, card_type, is_suspended,
-                fsrs_due, fsrs_state, fsrs_reps, fsrs_lapses, fsrs_scheduled_days, fsrs_elapsed_days,
-                created_at, updated_at)
-               VALUES (?, ?, ?, ?, ?, 'basic', 0, ?, 0, 0, 0, 0, 0, ?, ?)""",
-            (deck_id, user_id, card["front_content"], card["back_content"],
-             card["front_image_url"], now, now, now),
-        )
-
-    con.commit()
-    con.close()
-    print(f"  Inserted {len(cards)} cards into deck '{deck_id}'")
-    print("\nDone! Now:")
-    print("  1. git add public/maps/ && git commit")
-    print("  2. Push + deploy to homelab")
-    print("  3. On homelab: re-run this script (or import the SQLite deck rows)")
+    output = {
+        "deck": {
+            "name": "World Geography",
+            "description": "Identify countries and their capitals from their map shape and surrounding geography.",
+            "is_active": True,
+            "new_cards_per_day": 10,
+        },
+        "cards": cards,
+    }
+    json_path = PROJECT_ROOT / "scripts" / "geography_deck.json"
+    json_path.write_text(json.dumps(output, indent=2, ensure_ascii=False))
+    print(f"\nWrote {len(cards)} cards to {json_path}")
+    print("\nTo import on the server, run:")
+    print("  php artisan db:seed --class=GeographyDeckSeeder")
 
 
 if __name__ == "__main__":
