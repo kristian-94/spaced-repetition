@@ -253,11 +253,9 @@ function onSparkMouseLeave() {
                                     {{ deck.active_count }}/{{ deck.cards_count }} active
                                     <span class="text-gray-400 dark:text-gray-500">({{ Math.round((deck.active_count / deck.cards_count) * 100) }}%)</span>
                                 </span>
-                                <span
-                                    v-if="deck.due_count > 0"
-                                    class="inline-flex items-center gap-1 text-xs font-medium text-white bg-blue-600 px-1.5 py-0.5 rounded-full"
-                                >
-                                    {{ deck.due_count }} due
+                                <span v-if="deck.due_count > 0" class="inline-flex items-center gap-1 text-xs font-medium">
+                                    <span v-if="deck.review_due > 0" class="bg-blue-600 text-white px-1.5 py-0.5 rounded-full">{{ deck.review_due }} review</span>
+                                    <span v-if="deck.new_due > 0" class="bg-emerald-600 text-white px-1.5 py-0.5 rounded-full">{{ deck.new_due }} new</span>
                                 </span>
                             </div>
                             <div class="w-full h-3 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden flex">

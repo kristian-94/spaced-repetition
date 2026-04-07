@@ -54,24 +54,35 @@ class FsrsService
     }
 
     /**
-     * Get the count of due cards for a deck, respecting the global daily new card limit.
+     * Get review and new due counts separately for a deck.
+     *
+     * @return array{'review': int, 'new': int}
      */
-    public function getDueCount(Deck $deck): int
+    public function getDueCounts(Deck $deck): array
     {
         $reviewDue = $deck->cards()->dueToday()->where('fsrs_state', '>', 0)->count();
 
-        $limit = $deck->user->daily_new_cards_limit ?: 20;
-        $newSeenToday = $this->newCardsSeenTodayForUser($deck->user_id);
+        $perDeckLimit = $this->perDeckNewCardLimit($deck);
+        $newSeenTodayForDeck = $this->newCardsSeenTodayForDeck($deck->id, $deck->user_id);
         $newDue = min(
-            max(0, $limit - $newSeenToday),
+            max(0, $perDeckLimit - $newSeenTodayForDeck),
             $deck->cards()->dueToday()->where('fsrs_state', 0)->count()
         );
 
+        return ['review' => $reviewDue, 'new' => $newDue];
+    }
+
+    /**
+     * Get the total count of due cards for a deck.
+     */
+    public function getDueCount(Deck $deck): int
+    {
+        ['review' => $reviewDue, 'new' => $newDue] = $this->getDueCounts($deck);
         return $reviewDue + $newDue;
     }
 
     /**
-     * Get the next card to review for a deck, respecting the global daily new card limit.
+     * Get the next card to review for a deck, respecting the per-deck share of the daily new card limit.
      * Already-seen cards (state > 0) that are due are always shown first.
      */
     public function getNextCard(Deck $deck): ?Card
@@ -87,9 +98,9 @@ class FsrsService
             return $reviewCard;
         }
 
-        // New cards: respect the global daily limit across all decks
-        $limit = $deck->user->daily_new_cards_limit ?: 20;
-        if ($this->newCardsSeenTodayForUser($deck->user_id) >= $limit) {
+        // New cards: each deck gets an equal share of the daily limit
+        $perDeckLimit = $this->perDeckNewCardLimit($deck);
+        if ($this->newCardsSeenTodayForDeck($deck->id, $deck->user_id) >= $perDeckLimit) {
             return null;
         }
 
@@ -100,13 +111,25 @@ class FsrsService
             ->first();
     }
 
-    private function newCardsSeenTodayForUser(int $userId): int
+    /**
+     * Calculate the per-deck new card limit by dividing the global limit evenly across active decks.
+     */
+    private function perDeckNewCardLimit(Deck $deck): int
+    {
+        $globalLimit = $deck->user->daily_new_cards_limit ?: 20;
+        $deckCount = $deck->user->decks()->active()->count();
+
+        return (int) floor($globalLimit / max(1, $deckCount));
+    }
+
+    private function newCardsSeenTodayForDeck(int $deckId, int $userId): int
     {
         $sydney     = 'Australia/Sydney';
         $todayStart = now($sydney)->startOfDay()->utc();
         $todayEnd   = now($sydney)->endOfDay()->utc();
 
         return ReviewLog::where('user_id', $userId)
+            ->where('deck_id', $deckId)
             ->whereBetween('reviewed_at', [$todayStart, $todayEnd])
             ->where('state_before', 0)
             ->distinct('card_id')

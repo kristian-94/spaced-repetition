@@ -191,7 +191,7 @@ const ratingButtons = [
                         </div>
                         <div class="text-lg text-gray-900 dark:text-white leading-relaxed whitespace-pre-wrap">{{ card.front_content }}</div>
                         <div v-if="card.front_image_url" class="mt-4">
-                            <img :src="card.front_image_url" alt="Front image" class="max-w-full rounded-lg max-h-64 object-contain" />
+                            <img :src="card.front_image_url" alt="Front image" class="w-full rounded-lg" />
                         </div>
                     </div>
 

@@ -99,7 +99,10 @@ class DeckController extends Controller
             ->orderBy('name')
             ->get()
             ->map(function ($deck) use ($newTodayByDeck, $masteredLogs, $masteredBeforeWindow, $sydney) {
-                $deck->due_count      = $this->fsrsService->getDueCount($deck);
+                ['review' => $reviewDue, 'new' => $newDue] = $this->fsrsService->getDueCounts($deck);
+                $deck->due_count      = $reviewDue + $newDue;
+                $deck->review_due     = $reviewDue;
+                $deck->new_due        = $newDue;
                 $deck->new_today      = $newTodayByDeck[$deck->id] ?? 0;
 
                 // Build cumulative mastered trend (30 days)
