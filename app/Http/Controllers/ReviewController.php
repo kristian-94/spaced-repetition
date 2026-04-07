@@ -52,7 +52,7 @@ class ReviewController extends Controller
 
     public function all(Request $request)
     {
-        $decks = Auth::user()->decks()->active()->get();
+        $decks = Auth::user()->decks()->active()->orderBy('sort_order')->orderBy('name')->get();
 
         $card = null;
         $currentDeck = null;

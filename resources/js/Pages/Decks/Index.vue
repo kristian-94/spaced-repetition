@@ -15,6 +15,52 @@ const totalActive = computed(() => props.decks.reduce((sum, d) => sum + (d.activ
 const activeDecks = computed(() => props.decks.filter(d => d.is_active));
 const inactiveDecks = computed(() => props.decks.filter(d => !d.is_active));
 
+// Drag-to-reorder state
+const dragSrcIndex = ref(null);
+const dragOverIndex = ref(null);
+
+function onDragStart(event, index) {
+    dragSrcIndex.value = index;
+    event.dataTransfer.effectAllowed = 'move';
+}
+
+function onDragOver(event, index) {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+    dragOverIndex.value = index;
+}
+
+function onDragLeave() {
+    dragOverIndex.value = null;
+}
+
+function onDrop(event, dropIndex) {
+    event.preventDefault();
+    const fromIndex = dragSrcIndex.value;
+    dragSrcIndex.value = null;
+    dragOverIndex.value = null;
+
+    if (fromIndex === null || fromIndex === dropIndex) return;
+
+    // Reorder active decks locally
+    const reordered = [...activeDecks.value];
+    const [moved] = reordered.splice(fromIndex, 1);
+    reordered.splice(dropIndex, 0, moved);
+
+    // Persist: send all active deck IDs in new order, followed by inactive deck IDs
+    const order = [
+        ...reordered.map(d => d.id),
+        ...inactiveDecks.value.map(d => d.id),
+    ];
+
+    router.post(route('decks.reorder'), { order }, { preserveScroll: true });
+}
+
+function onDragEnd() {
+    dragSrcIndex.value = null;
+    dragOverIndex.value = null;
+}
+
 const newPerDayEntries = computed(() => Object.entries(props.newPerDay ?? {}).map(([date, count]) => ({
     label: new Date(date + 'T00:00:00').toLocaleDateString('en', { weekday: 'short', month: 'short', day: 'numeric' }),
     count,
@@ -209,20 +255,40 @@ function onSparkMouseLeave() {
             <div v-else>
             <div class="grid gap-4 sm:grid-cols-2">
                 <div
-                    v-for="deck in activeDecks"
+                    v-for="(deck, index) in activeDecks"
                     :key="deck.id"
-                    class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-md transition-shadow"
+                    draggable="true"
+                    @dragstart="onDragStart($event, index)"
+                    @dragover="onDragOver($event, index)"
+                    @dragleave="onDragLeave"
+                    @drop="onDrop($event, index)"
+                    @dragend="onDragEnd"
+                    :class="[
+                        'bg-white dark:bg-gray-900 rounded-xl border overflow-hidden transition-shadow',
+                        dragOverIndex === index && dragSrcIndex !== index
+                            ? 'border-blue-400 shadow-lg'
+                            : 'border-gray-200 dark:border-gray-800 hover:shadow-md',
+                        dragSrcIndex === index ? 'opacity-50' : '',
+                    ]"
                 >
                     <!-- Deck color bar -->
                     <div v-if="deck.color" class="h-1.5" :style="{ backgroundColor: deck.color }"></div>
 
                     <div class="p-5">
                         <div class="flex items-start justify-between">
-                            <div class="flex-1 min-w-0 mr-3">
-                                <h2 class="font-semibold text-gray-900 dark:text-white truncate">{{ deck.name }}</h2>
-                                <p v-if="deck.description" class="text-sm text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-2">
-                                    {{ deck.description }}
-                                </p>
+                            <div class="flex items-center gap-2 flex-1 min-w-0 mr-3">
+                                <!-- Drag handle -->
+                                <div class="cursor-grab text-gray-300 dark:text-gray-600 hover:text-gray-400 flex-shrink-0" title="Drag to reorder">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 6a2 2 0 110-4 2 2 0 010 4zm8 0a2 2 0 110-4 2 2 0 010 4zM8 14a2 2 0 110-4 2 2 0 010 4zm8 0a2 2 0 110-4 2 2 0 010 4zM8 22a2 2 0 110-4 2 2 0 010 4zm8 0a2 2 0 110-4 2 2 0 010 4z"/>
+                                    </svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <h2 class="font-semibold text-gray-900 dark:text-white truncate">{{ deck.name }}</h2>
+                                    <p v-if="deck.description" class="text-sm text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-2">
+                                        {{ deck.description }}
+                                    </p>
+                                </div>
                             </div>
                             <div class="flex items-center gap-1 flex-shrink-0">
                                 <button

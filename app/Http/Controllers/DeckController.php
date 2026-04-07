@@ -96,6 +96,7 @@ class DeckController extends Controller
             ->withCount(['cards as learning_count' => fn($q) => $q->whereIn('fsrs_state', [1, 3])])
             ->withCount(['cards as mastered_count' => fn($q) => $q->where('fsrs_state', 2)->where('fsrs_difficulty', '<=', 5)])
             ->withCount(['cards as difficult_count' => fn($q) => $q->where('fsrs_state', 2)->where('fsrs_difficulty', '>', 5)])
+            ->orderBy('sort_order')
             ->orderBy('name')
             ->get()
             ->map(function ($deck) use ($newTodayByDeck, $masteredLogs, $masteredBeforeWindow, $sydney) {
@@ -176,5 +177,21 @@ class DeckController extends Controller
         $deck->update(['is_active' => !$deck->is_active]);
 
         return back()->with('success', 'Deck updated.');
+    }
+
+    public function reorder(Request $request)
+    {
+        $validated = $request->validate([
+            'order' => 'required|array',
+            'order.*' => 'required|integer|exists:decks,id',
+        ]);
+
+        $user = Auth::user();
+
+        foreach ($validated['order'] as $position => $deckId) {
+            $user->decks()->where('id', $deckId)->update(['sort_order' => $position]);
+        }
+
+        return response()->noContent();
     }
 }

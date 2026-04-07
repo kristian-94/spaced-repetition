@@ -35,6 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/decks/{deck}', [DeckController::class, 'update'])->name('decks.update');
     Route::delete('/decks/{deck}', [DeckController::class, 'destroy'])->name('decks.destroy');
     Route::patch('/decks/{deck}/toggle-active', [DeckController::class, 'toggleActive'])->name('decks.toggleActive');
+    Route::post('/decks/reorder', [DeckController::class, 'reorder'])->name('decks.reorder');
 
     // Cards
     Route::get('/decks/{deck}/cards', [CardController::class, 'index'])->name('cards.index');
