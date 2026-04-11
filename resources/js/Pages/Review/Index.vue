@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Link, router, useForm } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
@@ -10,6 +10,8 @@ const props = defineProps({
     nextDue: String,
     allMode: { type: Boolean, default: false },
 });
+
+const cardHasImage = computed(() => props.card?.front_image_url || props.card?.back_image_url);
 
 const showAnswer = ref(false);
 const startTime = ref(Date.now());
@@ -125,7 +127,7 @@ const ratingButtons = [
 
 <template>
     <AppLayout>
-        <div class="px-4 sm:px-8 py-8 max-w-2xl mx-auto">
+        <div :class="['px-4 sm:px-8 py-8 mx-auto', cardHasImage ? 'max-w-4xl' : 'max-w-2xl']">
             <!-- Header -->
             <div class="flex items-center gap-3 mb-6">
                 <Link
