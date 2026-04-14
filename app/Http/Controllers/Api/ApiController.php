@@ -15,10 +15,16 @@ class ApiController extends Controller
 
     public function listDecks(Request $request)
     {
+        $fsrs = new \App\Services\FsrsService();
         $decks = Auth::user()->decks()
             ->withCount('cards')
             ->orderBy('name')
-            ->get();
+            ->get()
+            ->map(function ($deck) use ($fsrs) {
+                $counts = $fsrs->getDueCounts($deck);
+                $deck->due_cards_count = $counts['review'] + $counts['new'];
+                return $deck;
+            });
 
         return response()->json(['data' => $decks]);
     }
