@@ -152,38 +152,38 @@ function formatDate(dateStr) {
     <AppLayout>
         <div class="px-4 sm:px-8 py-8 max-w-4xl mx-auto">
             <!-- Header -->
-            <div class="flex items-center gap-4 mb-6">
+            <div class="flex items-center gap-3 sm:gap-4 mb-6">
                 <Link
                     :href="route('decks.index')"
-                    class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                    class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors flex-shrink-0"
                 >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
                 </Link>
-                <div class="flex-1">
+                <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2">
                         <div v-if="deck.color" class="w-3 h-3 rounded-full flex-shrink-0" :style="{ backgroundColor: deck.color }"></div>
-                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ deck.name }}</h1>
+                        <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white truncate">{{ deck.name }}</h1>
                     </div>
-                    <p v-if="deck.description" class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{{ deck.description }}</p>
+                    <p v-if="deck.description" class="text-sm text-gray-500 dark:text-gray-400 mt-0.5 truncate">{{ deck.description }}</p>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 flex-shrink-0">
                     <Link
                         v-if="deck.is_active"
                         :href="route('review.index', deck.id)"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                     >
                         Review
                     </Link>
                     <button
                         @click="openAddCardModal"
-                        class="flex items-center gap-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                        class="flex items-center gap-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                     >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                         </svg>
-                        Add Card
+                        <span class="hidden sm:inline">Add Card</span>
                     </button>
                 </div>
             </div>
@@ -206,11 +206,11 @@ function formatDate(dateStr) {
                 <table class="w-full text-sm">
                     <thead>
                         <tr class="border-b border-gray-200 dark:border-gray-800">
-                            <th class="text-left px-4 py-3 font-medium text-gray-500 dark:text-gray-400">Front</th>
-                            <th class="text-left px-4 py-3 font-medium text-gray-500 dark:text-gray-400 hidden sm:table-cell">Back</th>
-                            <th class="text-left px-4 py-3 font-medium text-gray-500 dark:text-gray-400 hidden sm:table-cell">State</th>
-                            <th class="text-left px-4 py-3 font-medium text-gray-500 dark:text-gray-400 hidden md:table-cell">Due</th>
-                            <th class="px-4 py-3"></th>
+                            <th class="text-left px-3 sm:px-4 py-3 font-medium text-gray-500 dark:text-gray-400">Front</th>
+                            <th class="text-left px-3 sm:px-4 py-3 font-medium text-gray-500 dark:text-gray-400 hidden sm:table-cell">Back</th>
+                            <th class="text-left px-3 sm:px-4 py-3 font-medium text-gray-500 dark:text-gray-400 hidden sm:table-cell">State</th>
+                            <th class="text-left px-3 sm:px-4 py-3 font-medium text-gray-500 dark:text-gray-400 hidden md:table-cell">Due</th>
+                            <th class="px-2 sm:px-4 py-3"></th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
@@ -220,25 +220,25 @@ function formatDate(dateStr) {
                             :class="card.is_suspended ? 'opacity-50' : ''"
                             class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
                         >
-                            <td class="px-4 py-3 max-w-[200px] truncate text-gray-900 dark:text-white">
+                            <td class="px-3 sm:px-4 py-3 max-w-[150px] sm:max-w-[200px] truncate text-gray-900 dark:text-white">
                                 {{ card.front_content }}
                             </td>
-                            <td class="px-4 py-3 max-w-[200px] truncate text-gray-600 dark:text-gray-400 hidden sm:table-cell">
+                            <td class="px-3 sm:px-4 py-3 max-w-[200px] truncate text-gray-600 dark:text-gray-400 hidden sm:table-cell">
                                 {{ card.back_content }}
                             </td>
-                            <td class="px-4 py-3 hidden sm:table-cell">
+                            <td class="px-3 sm:px-4 py-3 hidden sm:table-cell">
                                 <span :class="['px-2 py-0.5 rounded-full text-xs font-medium', stateClasses[card.fsrs_state]]">
                                     {{ stateLabels[card.fsrs_state] }}
                                 </span>
                             </td>
-                            <td class="px-4 py-3 text-gray-500 dark:text-gray-400 text-xs hidden md:table-cell">
+                            <td class="px-3 sm:px-4 py-3 text-gray-500 dark:text-gray-400 text-xs hidden md:table-cell">
                                 {{ formatDate(card.fsrs_due) }}
                             </td>
-                            <td class="px-4 py-3">
-                                <div class="flex items-center justify-end gap-1">
+                            <td class="px-2 sm:px-4 py-3">
+                                <div class="flex items-center justify-end gap-0.5 sm:gap-1">
                                     <button
                                         @click="openPreviewModal(card)"
-                                        class="p-1.5 rounded-md text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+                                        class="p-1 sm:p-1.5 rounded-md text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
                                         title="Preview"
                                     >
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -248,7 +248,7 @@ function formatDate(dateStr) {
                                     </button>
                                     <button
                                         @click="openEditCardModal(card)"
-                                        class="p-1.5 rounded-md text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                                        class="p-1 sm:p-1.5 rounded-md text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                                         title="Edit"
                                     >
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -258,7 +258,7 @@ function formatDate(dateStr) {
                                     <button
                                         @click="suspendCard(card)"
                                         :title="card.is_suspended ? 'Unsuspend' : 'Suspend'"
-                                        class="p-1.5 rounded-md text-gray-400 hover:text-yellow-600 dark:hover:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
+                                        class="hidden sm:block p-1.5 rounded-md text-gray-400 hover:text-yellow-600 dark:hover:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors"
                                     >
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -266,7 +266,7 @@ function formatDate(dateStr) {
                                     </button>
                                     <button
                                         @click="deleteCard(card)"
-                                        class="p-1.5 rounded-md text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                                        class="p-1 sm:p-1.5 rounded-md text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
                                         title="Delete"
                                     >
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -359,7 +359,7 @@ function formatDate(dateStr) {
                                 ></textarea>
                                 <p v-if="addCardForm.errors.back_content" class="text-red-500 text-xs mt-1">{{ addCardForm.errors.back_content }}</p>
                             </div>
-                            <div class="grid grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Front Image <span class="text-gray-400">(optional)</span></label>
                                     <input
