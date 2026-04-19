@@ -52,4 +52,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(SocialAccount::class);
     }
+
+    public function isAdmin(): bool
+    {
+        $adminEmail = config('app.admin_email');
+
+        return $adminEmail !== null && $adminEmail !== '' && $this->email === $adminEmail;
+    }
 }

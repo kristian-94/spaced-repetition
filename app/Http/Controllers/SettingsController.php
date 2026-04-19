@@ -15,21 +15,29 @@ class SettingsController extends Controller
         $tokens = $user->tokens()->select(['id', 'name', 'last_used_at', 'created_at'])->get();
 
         return Inertia::render('Settings/Index', [
-            'telegram_chat_id' => $user->telegram_chat_id,
+            'telegram_chat_id' => $user->isAdmin() ? $user->telegram_chat_id : null,
             'daily_new_cards_limit' => $user->daily_new_cards_limit ?? 20,
             'tokens' => $tokens,
             'baseUrl' => rtrim(config('app.url'), '/'),
+            'can_use_telegram' => $user->isAdmin(),
         ]);
     }
 
     public function update(Request $request)
     {
-        $validated = $request->validate([
-            'telegram_chat_id' => 'nullable|string|max:100',
-            'daily_new_cards_limit' => 'sometimes|integer|min:1|max:9999',
-        ]);
+        $user = Auth::user();
 
-        Auth::user()->update($validated);
+        $rules = [
+            'daily_new_cards_limit' => 'sometimes|integer|min:1|max:9999',
+        ];
+
+        if ($user->isAdmin()) {
+            $rules['telegram_chat_id'] = 'nullable|string|max:100';
+        }
+
+        $validated = $request->validate($rules);
+
+        $user->update($validated);
 
         return back()->with('success', 'Settings saved.');
     }
@@ -58,6 +66,8 @@ class SettingsController extends Controller
     public function testNotification(Request $request)
     {
         $user = Auth::user();
+
+        abort_unless($user->isAdmin(), 403);
 
         if (!$user->telegram_chat_id) {
             return back()->withErrors(['telegram' => 'Please set your Telegram Chat ID first.']);

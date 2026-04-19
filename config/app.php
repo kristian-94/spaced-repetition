@@ -56,6 +56,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Admin User Email
+    |--------------------------------------------------------------------------
+    |
+    | Email of the single admin user for this deployment. Admin-only features
+    | (such as configuring the shared Telegram bot) are hidden from everyone
+    | else. Leave unset to hide these features from all users.
+    |
+    */
+
+    'admin_email' => env('ADMIN_EMAIL'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |
