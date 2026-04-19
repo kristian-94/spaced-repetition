@@ -79,6 +79,7 @@ Session.vim
 .cursor/
 .copilot/
 .continue/
+.claude/
 CLAUDE.local.md
 
 # Buckets (private card content)
