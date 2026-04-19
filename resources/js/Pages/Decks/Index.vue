@@ -220,8 +220,8 @@ function onSparkMouseLeave() {
                         <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ newCardsToday }} <span class="text-sm font-normal text-gray-400">/ {{ dailyLimit }}</span></p>
                     </div>
                 </div>
-                <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium mb-2">New cards introduced — last 7 days</p>
-                <div class="flex items-end gap-1.5 h-16">
+                <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium mb-5">New cards introduced — last 7 days</p>
+                <div class="flex items-end gap-1.5 h-20">
                     <div
                         v-for="entry in newPerDayEntries"
                         :key="entry.label"
