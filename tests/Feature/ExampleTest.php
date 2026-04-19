@@ -13,9 +13,19 @@ class ExampleTest extends TestCase
      */
     public function test_the_application_returns_a_successful_response(): void
     {
-        // Root redirects unauthenticated users to login
-        $response = $this->get('/');
+        // Root renders the marketing landing page for unauthenticated visitors
+        $this->withoutVite()
+            ->get('/')
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->component('Landing'));
+    }
 
-        $response->assertRedirect(route('login'));
+    public function test_root_redirects_authenticated_users_to_decks(): void
+    {
+        $user = \App\Models\User::factory()->create();
+
+        $this->actingAs($user)
+            ->get('/')
+            ->assertRedirect(route('decks.index'));
     }
 }

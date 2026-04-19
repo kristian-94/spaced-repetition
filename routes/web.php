@@ -11,8 +11,12 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return redirect()->route('decks.index');
-})->middleware('auth');
+    if (auth()->check()) {
+        return redirect()->route('decks.index');
+    }
+
+    return Inertia::render('Landing');
+})->name('home');
 
 Route::get('/welcome', function () {
     return Inertia::render('Welcome', [
