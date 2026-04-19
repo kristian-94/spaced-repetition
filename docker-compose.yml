@@ -15,6 +15,7 @@ x-base: &base
     - ./resources:/app/resources
     - ./database/migrations:/app/database/migrations
     - ./database/seeders:/app/database/seeders
+    - ./public/maps:/app/public/maps
     - db-data:/app/database/sqlite
     - storage-data:/app/storage
   restart: unless-stopped
