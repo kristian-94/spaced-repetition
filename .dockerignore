@@ -1,0 +1,31 @@
+.git
+.gitignore
+
+# Dependencies installed inside the image — never copy the host copies.
+vendor
+node_modules
+
+# Build output is produced by the frontend stage.
+public/build
+
+# Local-only files.
+.env
+.env.*
+!.env.example
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+database/sqlite/*.sqlite
+
+# Editor / OS cruft.
+.idea
+.vscode
+*.swp
+.DS_Store
+
+# CI / tooling artifacts.
+.phpunit.result.cache
+coverage
+tests/Browser/screenshots
+tests/Browser/console

@@ -1,5 +1,30 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
+import { onMounted, ref } from 'vue';
+
+const themeMode = ref('system');
+
+onMounted(() => {
+    themeMode.value = localStorage.getItem('themeMode') || 'system';
+    applyTheme();
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+        if (themeMode.value === 'system') applyTheme();
+    });
+});
+
+function cycleTheme() {
+    const modes = ['system', 'light', 'dark'];
+    const next = modes[(modes.indexOf(themeMode.value) + 1) % modes.length];
+    themeMode.value = next;
+    localStorage.setItem('themeMode', next);
+    applyTheme();
+}
+
+function applyTheme() {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = themeMode.value === 'dark' || (themeMode.value === 'system' && prefersDark);
+    document.documentElement.classList.toggle('dark', isDark);
+}
 
 const features = [
     {
@@ -53,6 +78,25 @@ const features = [
                     >
                         API
                     </Link>
+                    <button
+                        type="button"
+                        @click="cycleTheme"
+                        :aria-label="`Theme: ${themeMode}. Click to change.`"
+                        :title="`Theme: ${themeMode}`"
+                        class="inline-flex items-center justify-center rounded-md p-2 text-gray-600 transition hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+                    >
+                        <svg v-if="themeMode === 'system'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <rect x="3" y="4" width="18" height="12" rx="2" />
+                            <path stroke-linecap="round" d="M8 20h8M12 16v4" />
+                        </svg>
+                        <svg v-else-if="themeMode === 'light'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <circle cx="12" cy="12" r="4" />
+                            <path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+                        </svg>
+                        <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                        </svg>
+                    </button>
                     <Link
                         :href="route('login')"
                         class="rounded-md bg-gray-900 px-4 py-2 font-medium text-white shadow-sm transition hover:bg-gray-700 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
@@ -72,9 +116,7 @@ const features = [
                     <span class="block text-indigo-600 dark:text-indigo-400">For good this time.</span>
                 </h1>
                 <p class="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
-                    Smart flashcards that actually stick. Review a few minutes
-                    a day and keep what you study — whether it's a language,
-                    anatomy, or the capitals of the world.
+                    Smart flashcards that you will remember. Review a few minutes a day.
                 </p>
 
                 <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
