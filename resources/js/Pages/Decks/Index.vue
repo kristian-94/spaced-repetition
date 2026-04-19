@@ -107,6 +107,27 @@ function openNewDeckModal() {
     showNewDeckModal.value = true;
 }
 
+// Starter deck ideas shown during onboarding (when user has no decks yet).
+// Clicking one pre-fills the New Deck modal — they can edit before creating.
+const starterDecks = [
+    { emoji: '🌍', name: 'Country Flags', description: 'Match flags to countries around the world.', color: '#3b82f6' },
+    { emoji: '🏛️', name: 'Capital Cities', description: 'Capitals of every country — a geography classic.', color: '#8b5cf6' },
+    { emoji: '🇫🇷', name: 'French Vocabulary', description: 'Common French words and everyday phrases.', color: '#06b6d4' },
+    { emoji: '🇪🇸', name: 'Spanish Vocabulary', description: 'Everyday Spanish words to build a base.', color: '#f97316' },
+    { emoji: '🩺', name: 'Medical Conditions', description: 'Conditions, symptoms, and common treatments.', color: '#ef4444' },
+    { emoji: '🧪', name: 'Periodic Table', description: 'Elements, symbols, and atomic numbers.', color: '#22c55e' },
+    { emoji: '📐', name: 'Math Formulas', description: 'Formulas and identities worth knowing by heart.', color: '#eab308' },
+    { emoji: '📖', name: 'Vocabulary Builder', description: 'Interesting words to add to your vocabulary.', color: '#ec4899' },
+];
+
+function useStarter(starter) {
+    newDeckForm.reset();
+    newDeckForm.name = starter.name;
+    newDeckForm.description = starter.description;
+    newDeckForm.color = starter.color;
+    showNewDeckModal.value = true;
+}
+
 function openEditDeckModal(deck) {
     editingDeck.value = deck;
     editDeckForm.name = deck.name;
@@ -238,17 +259,53 @@ function onSparkMouseLeave() {
                 </div>
             </div>
 
-            <!-- Empty state -->
-            <div v-if="decks.length === 0" class="text-center py-16">
-                <div class="text-5xl mb-4">📚</div>
-                <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No decks yet</h2>
-                <p class="text-gray-500 dark:text-gray-400 mb-6">Create your first deck to start studying.</p>
-                <button
-                    @click="openNewDeckModal"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition-colors"
-                >
-                    Create Deck
-                </button>
+            <!-- Empty state / onboarding -->
+            <div v-if="decks.length === 0" class="py-8">
+                <div class="text-center mb-8">
+                    <div class="text-5xl mb-4">📚</div>
+                    <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Create your first deck</h2>
+                    <p class="text-gray-500 dark:text-gray-400">
+                        Pick an idea below to get started, or
+                        <button
+                            @click="openNewDeckModal"
+                            class="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+                        >
+                            start from scratch
+                        </button>.
+                    </p>
+                </div>
+
+                <p class="text-xs uppercase tracking-wide font-medium text-gray-500 dark:text-gray-400 mb-3">
+                    A few ideas to try
+                </p>
+                <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    <button
+                        v-for="starter in starterDecks"
+                        :key="starter.name"
+                        @click="useStarter(starter)"
+                        type="button"
+                        class="group flex items-start gap-3 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 text-left transition hover:border-blue-400 hover:shadow-md dark:hover:border-blue-500"
+                    >
+                        <div
+                            class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-xl"
+                            :style="{ backgroundColor: starter.color + '20' }"
+                        >
+                            {{ starter.emoji }}
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                                {{ starter.name }}
+                            </p>
+                            <p class="mt-0.5 text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
+                                {{ starter.description }}
+                            </p>
+                        </div>
+                    </button>
+                </div>
+
+                <p class="mt-6 text-center text-xs text-gray-400 dark:text-gray-500">
+                    Picking an idea just pre-fills the name — you can edit everything before creating.
+                </p>
             </div>
 
             <!-- Deck grid -->
