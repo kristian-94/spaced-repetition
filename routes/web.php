@@ -22,6 +22,13 @@ Route::get('/welcome', function () {
     ]);
 })->name('welcome');
 
+// Public API documentation (no auth — agents / prospective users can read it).
+Route::get('/docs/api', function () {
+    return Inertia::render('Docs/Api', [
+        'baseUrl' => rtrim(config('app.url'), '/'),
+    ]);
+})->name('docs.api');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     // Redirect /dashboard to decks
     Route::get('/dashboard', function () {

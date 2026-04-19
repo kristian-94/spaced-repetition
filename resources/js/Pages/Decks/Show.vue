@@ -185,6 +185,16 @@ function formatDate(dateStr) {
                         </svg>
                         <span class="hidden sm:inline">Add Card</span>
                     </button>
+                    <Link
+                        :href="route('docs.api')"
+                        class="flex items-center gap-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                        title="Use an AI agent to generate cards via the API"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                        <span class="hidden sm:inline">Use AI / API</span>
+                    </Link>
                 </div>
             </div>
 
@@ -192,13 +202,24 @@ function formatDate(dateStr) {
             <div v-if="allCards.length === 0" class="text-center py-16">
                 <div class="text-5xl mb-4">✏️</div>
                 <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No cards yet</h2>
-                <p class="text-gray-500 dark:text-gray-400 mb-6">Add your first card to this deck.</p>
-                <button
-                    @click="openAddCardModal"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition-colors"
-                >
-                    Add Card
-                </button>
+                <p class="text-gray-500 dark:text-gray-400 mb-6">Add your first card, or use your own AI agent to do it for you.</p>
+                <div class="flex items-center justify-center gap-3 flex-wrap">
+                    <button
+                        @click="openAddCardModal"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition-colors"
+                    >
+                        Add Card
+                    </button>
+                    <Link
+                        :href="route('docs.api')"
+                        class="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 px-5 py-2 rounded-lg text-sm font-medium transition-colors"
+                    >
+                        Use AI / API →
+                    </Link>
+                </div>
+                <p class="text-xs text-gray-400 dark:text-gray-500 mt-6 max-w-md mx-auto">
+                    Point Claude Code or another agent at this app's API and it will generate a full deck in seconds.
+                </p>
             </div>
 
             <!-- Cards table -->

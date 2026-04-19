@@ -47,14 +47,16 @@ class DeckTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $this->actingAs($user)
-            ->post(route('decks.store'), ['name' => 'French Vocab', 'description' => 'French words'])
-            ->assertRedirect(route('decks.index'));
+        $response = $this->actingAs($user)
+            ->post(route('decks.store'), ['name' => 'French Vocab', 'description' => 'French words']);
 
         $this->assertDatabaseHas('decks', [
             'user_id' => $user->id,
             'name' => 'French Vocab',
         ]);
+
+        $deck = Deck::where('name', 'French Vocab')->firstOrFail();
+        $response->assertRedirect(route('cards.index', $deck));
     }
 
     public function test_deck_name_is_required(): void

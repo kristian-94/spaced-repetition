@@ -139,8 +139,8 @@ class DeckController extends Controller
 
         $deck = Auth::user()->decks()->create($validated);
 
-        return redirect()->route('decks.index')
-            ->with('success', "Deck \"{$deck->name}\" created.");
+        return redirect()->route('cards.index', $deck)
+            ->with('success', "Deck \"{$deck->name}\" created. Add cards manually, or use the API from an AI agent.");
     }
 
     public function update(Request $request, Deck $deck)

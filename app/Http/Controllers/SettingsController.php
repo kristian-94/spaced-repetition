@@ -18,6 +18,7 @@ class SettingsController extends Controller
             'telegram_chat_id' => $user->telegram_chat_id,
             'daily_new_cards_limit' => $user->daily_new_cards_limit ?? 20,
             'tokens' => $tokens,
+            'baseUrl' => rtrim(config('app.url'), '/'),
         ]);
     }
 

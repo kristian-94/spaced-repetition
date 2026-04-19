@@ -1,17 +1,41 @@
 <script setup>
-import { ref } from 'vue';
-import { useForm, usePage } from '@inertiajs/vue3';
+import { computed, ref } from 'vue';
+import { Link, useForm, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
 const props = defineProps({
     telegram_chat_id: String,
     daily_new_cards_limit: Number,
     tokens: Array,
+    baseUrl: String,
 });
 
 const page = usePage();
 const newToken = ref(page.props.flash?.new_token ?? null);
 const copied = ref(false);
+const promptCopied = ref(false);
+
+const apiBase = computed(() => `${(props.baseUrl ?? window.location.origin).replace(/\/$/, '')}/api`);
+const docsUrl = computed(() => `${(props.baseUrl ?? window.location.origin).replace(/\/$/, '')}/docs/api`);
+
+const agentPrompt = computed(() => {
+    if (!newToken.value) return '';
+    return `You have access to a spaced repetition flashcard app via a REST API.
+
+API base: ${apiBase.value}
+Auth header: Authorization: Bearer ${newToken.value}
+Docs: ${docsUrl.value}
+
+Workflow:
+1. List existing decks:  GET ${apiBase.value}/decks
+2. Create a deck if needed:  POST ${apiBase.value}/decks  with {"name": "..."}
+3. Push cards in batches:  POST ${apiBase.value}/decks/{id}/cards
+   with {"cards": [{"front_content": "...", "back_content": "..."}, ...]}
+
+Please generate high-quality flashcards for the topic I give you and push
+them to the right deck. Use concise front/back content (single concept per
+card). Create a deck if one doesn't already fit.`;
+});
 
 const settingsForm = useForm({
     telegram_chat_id: props.telegram_chat_id ?? '',
@@ -52,6 +76,14 @@ function copyToken() {
     });
 }
 
+function copyAgentPrompt() {
+    if (!agentPrompt.value) return;
+    navigator.clipboard.writeText(agentPrompt.value).then(() => {
+        promptCopied.value = true;
+        setTimeout(() => (promptCopied.value = false), 2000);
+    });
+}
+
 function sendTestNotification() {
     testNotifForm.post(route('settings.test-notification'));
 }
@@ -73,18 +105,35 @@ function formatDate(dateStr) {
             </div>
 
             <!-- New token display -->
-            <div v-if="newToken" class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
-                <p class="text-sm font-medium text-yellow-800 dark:text-yellow-300 mb-2">Your new API token (copy it now — it won't be shown again):</p>
-                <div class="flex items-center gap-2">
-                    <code class="flex-1 text-sm bg-white dark:bg-gray-800 border border-yellow-200 dark:border-yellow-700 rounded px-3 py-2 font-mono break-all text-gray-900 dark:text-white">
-                        {{ newToken }}
-                    </code>
-                    <button
-                        @click="copyToken"
-                        class="flex-shrink-0 px-3 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded text-sm font-medium transition-colors"
-                    >
-                        {{ copied ? 'Copied!' : 'Copy' }}
-                    </button>
+            <div v-if="newToken" class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 space-y-4">
+                <div>
+                    <p class="text-sm font-medium text-yellow-800 dark:text-yellow-300 mb-2">Your new API token (copy it now — it won't be shown again):</p>
+                    <div class="flex items-center gap-2">
+                        <code class="flex-1 text-sm bg-white dark:bg-gray-800 border border-yellow-200 dark:border-yellow-700 rounded px-3 py-2 font-mono break-all text-gray-900 dark:text-white">
+                            {{ newToken }}
+                        </code>
+                        <button
+                            @click="copyToken"
+                            class="flex-shrink-0 px-3 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded text-sm font-medium transition-colors"
+                        >
+                            {{ copied ? 'Copied!' : 'Copy' }}
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <p class="text-sm font-medium text-yellow-800 dark:text-yellow-300">
+                            Or paste this straight into your agent harness:
+                        </p>
+                        <button
+                            @click="copyAgentPrompt"
+                            class="flex-shrink-0 px-3 py-1.5 bg-yellow-600 hover:bg-yellow-700 text-white rounded text-xs font-medium transition-colors"
+                        >
+                            {{ promptCopied ? 'Copied!' : 'Copy prompt' }}
+                        </button>
+                    </div>
+                    <pre class="text-xs bg-white dark:bg-gray-800 border border-yellow-200 dark:border-yellow-700 rounded px-3 py-2 overflow-x-auto whitespace-pre-wrap text-gray-900 dark:text-white">{{ agentPrompt }}</pre>
                 </div>
             </div>
 
@@ -163,7 +212,9 @@ function formatDate(dateStr) {
             <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
                 <h2 class="text-base font-semibold text-gray-900 dark:text-white mb-1">API Tokens</h2>
                 <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                    Use tokens to add cards via the API (e.g. from Claude or scripts).
+                    Use tokens to add cards via the API — pair one with an AI agent (Claude Code, a script)
+                    to generate whole decks in seconds. See the
+                    <Link :href="route('docs.api')" class="text-blue-600 dark:text-blue-400 hover:underline">API docs</Link>.
                 </p>
 
                 <!-- Existing tokens -->
