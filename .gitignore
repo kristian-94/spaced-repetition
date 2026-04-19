@@ -84,6 +84,9 @@ CLAUDE.local.md
 # Buckets (private card content)
 /buckets/
 
+# Script caches (large downloaded data)
+/scripts/.cache/
+
 # Misc
 *.bak
 *.tmp
