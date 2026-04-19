@@ -3,34 +3,34 @@ import { Head, Link } from '@inertiajs/vue3';
 
 const features = [
     {
-        title: 'FSRS-powered scheduling',
-        body: 'Cards resurface at the precise moment you\'re about to forget them, using the modern FSRS algorithm. Less time reviewing, more time remembering.',
+        title: 'Built on FSRS',
+        body: 'Cards resurface at the precise moment you\'re about to forget them, using the modern FSRS algorithm. Less time reviewing, better retention.',
         icon: '🧠',
     },
     {
         title: 'One queue for everything',
-        body: 'Review all your decks in a single session, or drill a specific deck. A daily boost keeps your streak alive on busy days.',
+        body: 'Review all your decks in a single session, or drill a specific deck. Control your rate of new cards, or boost for those busy days.',
         icon: '⚡',
     },
     {
-        title: 'Friendly to AI agents',
-        body: 'Generate a token and let Claude or ChatGPT push flashcards into your decks via a simple REST API. Learning at the speed of a prompt.',
+        title: 'Build decks with AI',
+        body: 'Generate an API token and let Claude or ChatGPT push flashcards straight into your decks. Turn any topic into a deck in minutes.',
         icon: '🤖',
     },
     {
-        title: 'Reminders that nudge, not nag',
-        body: 'Optional Telegram notifications when reviews are due. No app to install, no push permissions to juggle.',
-        icon: '🔔',
+        title: 'Hear it, then say it',
+        body: 'Automatic text-to-speech in a dozen languages — perfect for vocabulary, phrases, and pronunciation drills.',
+        icon: '🔊',
     },
     {
-        title: 'Sign in with Google',
-        body: 'No passwords to forget. One click to get started, one click to come back.',
-        icon: '🔐',
+        title: 'Progress you can see',
+        body: 'Mastered cards, due counts, and 30-day trends for every deck. Watch knowledge stick.',
+        icon: '📈',
     },
     {
-        title: 'Yours to own',
-        body: 'Self-hosted and open. Your decks, your data, your pace.',
-        icon: '📚',
+        title: 'Works everywhere',
+        body: 'Web-first and mobile-friendly. Open it on your phone, laptop, or tablet — your progress follows you.',
+        icon: '🌐',
     },
 ];
 </script>
@@ -72,10 +72,9 @@ const features = [
                     <span class="block text-indigo-600 dark:text-indigo-400">For good this time.</span>
                 </h1>
                 <p class="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
-                    A tiny, focused spaced-repetition app. Make flashcards,
-                    review a few minutes a day, and actually keep what you
-                    study — whether it's a language, anatomy, or the capitals
-                    of the world.
+                    Smart flashcards that actually stick. Review a few minutes
+                    a day and keep what you study — whether it's a language,
+                    anatomy, or the capitals of the world.
                 </p>
 
                 <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
