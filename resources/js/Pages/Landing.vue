@@ -104,7 +104,7 @@ const features = [
                 </div>
 
                 <p class="mt-4 text-sm text-gray-500 dark:text-gray-500">
-                    Free. No credit card. One-click sign in.
+                    Free during early access. No credit card.
                 </p>
             </div>
         </section>
@@ -157,6 +157,22 @@ const features = [
                         </p>
                     </li>
                 </ol>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section id="pricing" class="mx-auto max-w-3xl px-6 pt-20">
+            <div class="rounded-2xl border border-gray-200 bg-white p-8 text-center shadow-sm dark:border-gray-800 dark:bg-gray-900 sm:p-10">
+                <p class="text-xs uppercase tracking-wider font-semibold text-indigo-600 dark:text-indigo-400">
+                    Pricing
+                </p>
+                <p class="mt-3 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+                    Free during early access
+                </p>
+                <p class="mx-auto mt-3 max-w-md text-gray-600 dark:text-gray-400">
+                    Unlimited decks, unlimited cards, every feature.
+                    No credit card needed to sign up.
+                </p>
             </div>
         </section>
 
