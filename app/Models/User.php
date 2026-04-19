@@ -16,13 +16,12 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'avatar_url',
         'telegram_chat_id',
         'daily_new_cards_limit',
     ];
 
     protected $hidden = [
-        'password',
         'remember_token',
     ];
 
@@ -30,7 +29,6 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
             'daily_new_cards_limit' => 'integer',
         ];
     }
@@ -48,5 +46,10 @@ class User extends Authenticatable
     public function reviewLogs()
     {
         return $this->hasMany(ReviewLog::class);
+    }
+
+    public function socialAccounts()
+    {
+        return $this->hasMany(SocialAccount::class);
     }
 }

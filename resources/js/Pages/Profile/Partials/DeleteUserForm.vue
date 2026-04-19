@@ -1,31 +1,26 @@
 <script setup>
+import Checkbox from '@/Components/Checkbox.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
-import { nextTick, ref } from 'vue';
+import { ref } from 'vue';
 
 const confirmingUserDeletion = ref(false);
-const passwordInput = ref(null);
 
 const form = useForm({
-    password: '',
+    confirm: false,
 });
 
 const confirmUserDeletion = () => {
     confirmingUserDeletion.value = true;
-
-    nextTick(() => passwordInput.value.focus());
 };
 
 const deleteUser = () => {
     form.delete(route('profile.destroy'), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
-        onError: () => passwordInput.value.focus(),
         onFinish: () => form.reset(),
     });
 };
@@ -63,29 +58,20 @@ const closeModal = () => {
                 </h2>
 
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Once your account is deleted, all of its resources and data
-                    will be permanently deleted. Please enter your password to
-                    confirm you would like to permanently delete your account.
+                    Once your account is deleted, all of its decks, cards, and
+                    review history will be permanently deleted. This cannot be
+                    undone.
                 </p>
 
                 <div class="mt-6">
-                    <InputLabel
-                        for="password"
-                        value="Password"
-                        class="sr-only"
-                    />
+                    <label class="flex items-center gap-2">
+                        <Checkbox v-model:checked="form.confirm" />
+                        <span class="text-sm text-gray-700 dark:text-gray-300">
+                            I understand this is permanent.
+                        </span>
+                    </label>
 
-                    <TextInput
-                        id="password"
-                        ref="passwordInput"
-                        v-model="form.password"
-                        type="password"
-                        class="mt-1 block w-3/4"
-                        placeholder="Password"
-                        @keyup.enter="deleteUser"
-                    />
-
-                    <InputError :message="form.errors.password" class="mt-2" />
+                    <InputError :message="form.errors.confirm" class="mt-2" />
                 </div>
 
                 <div class="mt-6 flex justify-end">
@@ -96,7 +82,7 @@ const closeModal = () => {
                     <DangerButton
                         class="ms-3"
                         :class="{ 'opacity-25': form.processing }"
-                        :disabled="form.processing"
+                        :disabled="form.processing || !form.confirm"
                         @click="deleteUser"
                     >
                         Delete Account
