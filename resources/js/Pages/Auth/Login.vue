@@ -1,6 +1,6 @@
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import { Head, usePage } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
 defineProps({
@@ -71,6 +71,15 @@ const oauthError = computed(() => page.props.errors?.oauth);
                 </svg>
                 <span>Continue with Google</span>
             </a>
+
+            <div class="text-center">
+                <Link
+                    href="/"
+                    class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+                >
+                    &larr; Back to home
+                </Link>
+            </div>
         </div>
     </GuestLayout>
 </template>
