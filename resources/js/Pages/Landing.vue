@@ -73,6 +73,12 @@ const features = [
                 </div>
                 <nav class="flex items-center gap-2 text-sm">
                     <Link
+                        :href="route('learn')"
+                        class="hidden rounded-md px-3 py-2 text-gray-600 transition hover:text-gray-900 sm:inline-block dark:text-gray-400 dark:hover:text-gray-100"
+                    >
+                        How it works
+                    </Link>
+                    <Link
                         :href="route('docs.api')"
                         class="hidden rounded-md px-3 py-2 text-gray-600 transition hover:text-gray-900 sm:inline-block dark:text-gray-400 dark:hover:text-gray-100"
                     >
@@ -117,6 +123,15 @@ const features = [
                 </h1>
                 <p class="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
                     Smart flashcards that you will remember. Review a few minutes a day.
+                </p>
+                <p class="mx-auto mt-3 max-w-2xl text-sm text-gray-500 dark:text-gray-500">
+                    New to this?
+                    <Link
+                        :href="route('learn')"
+                        class="font-medium text-indigo-600 underline-offset-2 hover:underline dark:text-indigo-400"
+                    >
+                        What is spaced repetition?
+                    </Link>
                 </p>
 
                 <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -246,6 +261,7 @@ const features = [
             <div class="mx-auto flex max-w-5xl flex-col items-center justify-between gap-2 px-6 py-6 text-sm text-gray-500 sm:flex-row dark:text-gray-500">
                 <div>🧠 Spaced Repetition</div>
                 <div class="flex gap-4">
+                    <Link :href="route('learn')" class="hover:text-gray-900 dark:hover:text-gray-100">How it works</Link>
                     <Link :href="route('docs.api')" class="hover:text-gray-900 dark:hover:text-gray-100">API docs</Link>
                     <Link :href="route('login')" class="hover:text-gray-900 dark:hover:text-gray-100">Sign in</Link>
                 </div>

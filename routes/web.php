@@ -33,6 +33,11 @@ Route::get('/docs/api', function () {
     ]);
 })->name('docs.api');
 
+// Public explainer: what is spaced repetition?
+Route::get('/learn', function () {
+    return Inertia::render('Learn');
+})->name('learn');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     // Redirect /dashboard to decks
     Route::get('/dashboard', function () {
