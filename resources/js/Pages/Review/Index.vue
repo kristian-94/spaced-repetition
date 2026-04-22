@@ -24,6 +24,20 @@ const reviewForm = useForm({
     duration_ms: null,
 });
 
+const boostForm = useForm({
+    deck_id: props.allMode ? null : props.deck?.id,
+});
+
+const isBoosting = ref(false);
+
+function requestBoost() {
+    if (isBoosting.value) return;
+    isBoosting.value = true;
+    boostForm.post(route('review.boost'), {
+        onFinish: () => { isBoosting.value = false; },
+    });
+}
+
 function revealAnswer() {
     showAnswer.value = true;
 }
@@ -164,12 +178,24 @@ const ratingButtons = [
                 <p v-if="nextDue" class="text-sm text-gray-400 dark:text-gray-500 mb-6">
                     Next card due: {{ formatNextDue(nextDue) }}
                 </p>
-                <Link
-                    :href="route('decks.index')"
-                    class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-colors"
-                >
-                    Back to Decks
-                </Link>
+                <div class="flex items-center justify-center gap-3">
+                    <Link
+                        :href="route('decks.index')"
+                        class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-colors"
+                    >
+                        Back to Decks
+                    </Link>
+                    <button
+                        @click="requestBoost"
+                        :disabled="isBoosting"
+                        class="inline-flex items-center gap-1.5 bg-amber-500 hover:bg-amber-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        Boost (+5 cards)
+                    </button>
+                </div>
             </div>
 
             <!-- Review card -->

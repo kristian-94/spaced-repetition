@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Deck;
+use App\Models\DeckDailyBoost;
 use App\Services\FsrsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -94,6 +95,39 @@ class ReviewController extends Controller
         $card = $deck->cards()->findOrFail($validated['card_id']);
 
         $this->fsrsService->review($card, $validated['rating'], $validated['duration_ms'] ?? null);
+
+        return redirect()->route('review.all');
+    }
+
+    public function boost(Request $request)
+    {
+        $validated = $request->validate([
+            'deck_id' => 'nullable|exists:decks,id',
+        ]);
+
+        $user = Auth::user();
+        $sydney = 'Australia/Sydney';
+        $today = now($sydney)->toDateString();
+        $boostAmount = 5;
+
+        if (!empty($validated['deck_id'])) {
+            $deck = $user->decks()->findOrFail($validated['deck_id']);
+            DeckDailyBoost::updateOrCreate(
+                ['deck_id' => $deck->id, 'date' => $today],
+                []
+            )->increment('extra_cards', $boostAmount);
+
+            return redirect()->route('review.index', $deck);
+        }
+
+        // All-decks mode: boost every active deck
+        $decks = $user->decks()->active()->get();
+        foreach ($decks as $deck) {
+            DeckDailyBoost::updateOrCreate(
+                ['deck_id' => $deck->id, 'date' => $today],
+                []
+            )->increment('extra_cards', $boostAmount);
+        }
 
         return redirect()->route('review.all');
     }

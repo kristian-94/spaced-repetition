@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Card;
 use App\Models\Deck;
+use App\Models\DeckDailyBoost;
 use App\Models\ReviewLog;
 use App\Services\FsrsService;
 use Illuminate\Http\Request;
@@ -56,12 +57,19 @@ class DeckController extends Controller
 
         $newSeenToday = $newTodayByDeck->sum();
 
+        $todayDate = now($sydney)->toDateString();
+        $boostTotal = DeckDailyBoost::whereIn('deck_id', $user->decks()->active()->pluck('id'))
+            ->where('date', $todayDate)
+            ->sum('extra_cards');
+
+        $effectiveLimit = $limit + $boostTotal;
+
         $totalNewAvailable = Card::where('user_id', $userId)
             ->where('fsrs_state', 0)
             ->where('is_suspended', false)
             ->count();
 
-        $newRemainingToday = min(max(0, $limit - $newSeenToday), $totalNewAvailable);
+        $newRemainingToday = min(max(0, $effectiveLimit - $newSeenToday), $totalNewAvailable);
         $newCardsToday     = $newSeenToday + $newRemainingToday;
 
         // Cumulative mastered cards per deck over last 30 days
@@ -125,7 +133,7 @@ class DeckController extends Controller
             'totalDue'      => $decks->sum('due_count'),
             'newPerDay'     => $newPerDayFilled,
             'newCardsToday' => $newCardsToday,
-            'dailyLimit'    => $limit,
+            'dailyLimit'    => $effectiveLimit,
         ]);
     }
 

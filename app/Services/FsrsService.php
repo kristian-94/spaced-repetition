@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Card;
 use App\Models\Deck;
+use App\Models\DeckDailyBoost;
 use App\Models\ReviewLog;
 use DateTime;
 use DateTimeZone;
@@ -119,7 +120,16 @@ class FsrsService
         $globalLimit = $deck->user->daily_new_cards_limit ?: 20;
         $deckCount = $deck->user->decks()->active()->count();
 
-        return (int) floor($globalLimit / max(1, $deckCount));
+        $base = (int) floor($globalLimit / max(1, $deckCount));
+
+        $sydney = 'Australia/Sydney';
+        $today = now($sydney)->toDateString();
+
+        $boost = DeckDailyBoost::where('deck_id', $deck->id)
+            ->where('date', $today)
+            ->value('extra_cards') ?? 0;
+
+        return $base + $boost;
     }
 
     private function newCardsSeenTodayForDeck(int $deckId, int $userId): int

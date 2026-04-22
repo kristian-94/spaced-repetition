@@ -40,6 +40,11 @@ class Deck extends Model
         return $this->hasMany(ReviewLog::class);
     }
 
+    public function dailyBoosts()
+    {
+        return $this->hasMany(DeckDailyBoost::class);
+    }
+
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
