@@ -100,6 +100,7 @@ const ttsLanguages = [
     { value: 'pt-BR', label: 'Portuguese (Brazil)' },
     { value: 'ru-RU', label: 'Russian' },
     { value: 'ar-SA', label: 'Arabic' },
+    { value: 'el-GR', label: 'Greek' },
 ];
 
 function openNewDeckModal() {
